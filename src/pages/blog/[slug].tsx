@@ -7,6 +7,7 @@ import Post from '@/models/Post';
 import type { IPost } from '@/types/blog';
 import ShareButtons from '@/components/blog/ShareButtons';
 import Comments from "@/components/blog/Comments";
+import 'highlight.js/styles/github-dark.css';
 
 interface PostPageProps {
     post: IPost | null;
@@ -109,17 +110,14 @@ export default function PostPage({ post }: PostPageProps) {
             </header>
 
             {/* Post content */}
-            <div className="prose prose-lg max-w-none">
-                {post.content.split('\n').map((paragraph, index) => (
-                    <p key={index} className="mb-4">
-                        {paragraph}
-                    </p>
-                ))}
-            </div>
+            <div
+                className="prose prose-lg max-w-none"
+                dangerouslySetInnerHTML={{__html: post.content}}
+            />
 
 
             {/* Comments section */}
-            <Comments slug={post.slug} />
+            <Comments slug={post.slug}/>
         </article>
     );
 }
