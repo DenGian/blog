@@ -20,4 +20,8 @@ export const NAV_ITEMS: NavigationItem[] = [
         label: 'Contact',
         path: '/contact',
     },
+    {
+        label: 'Log in',
+        path: '/admin',
+    },
 ];
