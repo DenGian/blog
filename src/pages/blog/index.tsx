@@ -1,5 +1,6 @@
 import { GetServerSideProps } from 'next';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import dbConnect from '@/lib/mongodb';
 import Post from '@/models/Post';
 import { IPost } from '@/types/blog';
@@ -21,7 +22,20 @@ export default function BlogPage({
                                      totalPages = 1,
                                      activeTag = null
                                  }: BlogPageProps) {
+    const router = useRouter();
     const [selectedTag, setSelectedTag] = useState(activeTag);
+
+    const handleTagSelect = (tag: string | null) => {
+        setSelectedTag(tag);
+        // Update URL and fetch new data
+        router.push({
+            pathname: '/blog',
+            query: {
+                ...(tag && { tag }),
+                page: 1 // Reset to first page when selecting a new tag
+            }
+        });
+    };
 
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -39,7 +53,7 @@ export default function BlogPage({
             {/* Tags filter */}
             <div className="flex flex-wrap gap-2 mb-8 justify-center">
                 <button
-                    onClick={() => setSelectedTag(null)}
+                    onClick={() => handleTagSelect(null)}
                     className={`px-4 py-2 rounded-full ${
                         !selectedTag
                             ? 'bg-blue-600 text-white'
@@ -51,7 +65,7 @@ export default function BlogPage({
                 {tags.map((tag) => (
                     <button
                         key={tag}
-                        onClick={() => setSelectedTag(tag)}
+                        onClick={() => handleTagSelect(tag)}
                         className={`px-4 py-2 rounded-full ${
                             selectedTag === tag
                                 ? 'bg-blue-600 text-white'
