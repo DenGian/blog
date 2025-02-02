@@ -30,6 +30,12 @@ export default function NewPostPage() {
         setStatus('submitting');
         setError('');
 
+        if (!formData.content || formData.content.trim() === '') {
+            setStatus('error');
+            setError('Content is required. Please add some content to your post.');
+            return;
+        }
+
         try {
             const response = await fetch('/api/posts', {
                 method: 'POST',
