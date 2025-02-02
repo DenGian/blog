@@ -10,6 +10,10 @@ export default function ContactPage() {
     });
     const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
 
+    const inputClassName = "mt-1 block w-full px-4 py-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base";
+
+    const textareaClassName = "mt-1 block w-full px-4 py-3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-base min-h-[160px] resize-y";
+
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setStatus('sending');
@@ -51,7 +55,7 @@ export default function ContactPage() {
             <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Name Input */}
                 <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="name" className="block text-sm font-semibold text-gray-700">
                         Name
                     </label>
                     <input
@@ -61,13 +65,14 @@ export default function ContactPage() {
                         required
                         value={formData.name}
                         onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className={inputClassName}
+                        placeholder="Your name"
                     />
                 </div>
 
                 {/* Email Input */}
                 <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
                         Email
                     </label>
                     <input
@@ -77,13 +82,14 @@ export default function ContactPage() {
                         required
                         value={formData.email}
                         onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className={inputClassName}
+                        placeholder="Your email"
                     />
                 </div>
 
                 {/* Subject Input */}
                 <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="subject" className="block text-sm font-semibold text-gray-700">
                         Subject
                     </label>
                     <input
@@ -93,23 +99,25 @@ export default function ContactPage() {
                         required
                         value={formData.subject}
                         onChange={(e) => setFormData(prev => ({ ...prev, subject: e.target.value }))}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className={inputClassName}
+                        placeholder="The subject"
                     />
                 </div>
 
                 {/* Message Input */}
                 <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700">
+                    <label htmlFor="message" className="block text-sm font-semibold text-gray-700">
                         Message
                     </label>
                     <textarea
                         id="message"
                         name="message"
-                        rows={4}
+                        rows={6}
                         required
                         value={formData.message}
                         onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
-                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                        className={textareaClassName}
+                        placeholder="Your message"
                     />
                 </div>
 
