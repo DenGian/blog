@@ -4,6 +4,7 @@ import dbConnect from '@/lib/mongodb';
 import Post from '@/models/Post';
 import { IPost } from '@/types/blog';
 import PostList from '@/components/blog/PostList';
+import SearchBar from '@/components/blog/SearchBar';
 
 interface BlogPageProps {
     posts: IPost[];
@@ -31,6 +32,9 @@ export default function BlogPage({
                     Explore my thoughts, experiences and learnings during my internship.
                 </p>
             </div>
+
+            {/* Search */}
+            <SearchBar />
 
             {/* Tags filter */}
             <div className="flex flex-wrap gap-2 mb-8 justify-center">
@@ -90,12 +94,24 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
         const page = parseInt(query.page?.toString() || '1');
         const tag = query.tag?.toString() || null;
-        const limit = 9; // Posts per page
+        const search = query.search?.toString() || null;
+        const limit = 9;
 
         // Build query
-        const queryFilter = tag ? { tags: tag } : {};
+        let queryFilter: any = {};
 
-        // Get total count for pagination
+        if (tag) {
+            queryFilter.tags = tag;
+        }
+
+        if (search) {
+            queryFilter.$or = [
+                { title: { $regex: search, $options: 'i' } },
+                { content: { $regex: search, $options: 'i' } },
+                { tags: { $regex: search, $options: 'i' } }
+            ];
+        }
+
         const total = await Post.countDocuments(queryFilter);
         const totalPages = Math.ceil(total / limit);
 
