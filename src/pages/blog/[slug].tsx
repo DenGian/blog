@@ -1,15 +1,19 @@
 import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { formatDate } from '@/utils/formatDate';
 import dbConnect from '@/lib/mongodb';
 import Post from '@/models/Post';
 import type { IPost } from '@/types/blog';
+import ShareButtons from '@/components/blog/ShareButtons';
 
 interface PostPageProps {
     post: IPost | null;
 }
 
 export default function PostPage({ post }: PostPageProps) {
+    const router = useRouter();
+
     if (!post) {
         return (
             <div className="min-h-screen flex items-center justify-center">
@@ -25,6 +29,10 @@ export default function PostPage({ post }: PostPageProps) {
             </div>
         );
     }
+
+    const currentUrl = typeof window !== 'undefined'
+        ? window.location.href
+        : `${process.env.NEXT_PUBLIC_SITE_URL}/blog/${post.slug}`;
 
     return (
         <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -74,7 +82,7 @@ export default function PostPage({ post }: PostPageProps) {
                 <h1 className="text-4xl font-bold text-gray-900 mb-4">
                     {post.title}
                 </h1>
-                <div className="flex items-center justify-between text-gray-600">
+                <div className="flex items-center justify-between text-gray-600 mb-6">
                     <div className="flex items-center">
                         {post.author.image && (
                             <img
@@ -96,6 +104,7 @@ export default function PostPage({ post }: PostPageProps) {
                         </span>
                     )}
                 </div>
+                <ShareButtons title={post.title} url={currentUrl} />
             </header>
 
             {/* Post content */}
@@ -114,7 +123,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     try {
         await dbConnect();
 
-        const post = await Post.findOne({ slug: params?.slug }).lean();
+        const post = await Post.findOne({ slug: params?.slug });
 
         if (!post) {
             return {
@@ -124,9 +133,24 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
             };
         }
 
+        const transformedPost = {
+            _id: post._id.toString(),
+            title: post.title,
+            slug: post.slug,
+            content: post.content,
+            excerpt: post.excerpt,
+            coverImage: post.coverImage,
+            date: post.date,
+            tags: post.tags,
+            author: post.author,
+            readingTime: post.readingTime,
+            createdAt: post.createdAt,
+            updatedAt: post.updatedAt
+        };
+
         return {
             props: {
-                post: JSON.parse(JSON.stringify(post)),
+                post: JSON.parse(JSON.stringify(transformedPost)),
             },
         };
     } catch (error) {
