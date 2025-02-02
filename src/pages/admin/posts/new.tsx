@@ -1,6 +1,7 @@
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/router';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
+import Editor from '@/components/blog/Editor';
 
 export default function NewPostPage() {
     const { isAuthenticated, isLoading } = useAdminAuth();
@@ -161,14 +162,12 @@ export default function NewPostPage() {
                     <label htmlFor="content" className="block text-sm font-medium text-gray-700">
                         Content
                     </label>
-                    <textarea
-                        id="content"
-                        required
-                        rows={10}
-                        className="mt-1 block w-full px-4 py-3 rounded-md border border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                        value={formData.content}
-                        onChange={(e) => setFormData(prev => ({ ...prev, content: e.target.value }))}
-                    />
+                    <div className="mt-1">
+                        <Editor
+                            content={formData.content}
+                            onChange={(newContent) => setFormData(prev => ({...prev, content: newContent}))}
+                        />
+                    </div>
                 </div>
 
                 {error && (
