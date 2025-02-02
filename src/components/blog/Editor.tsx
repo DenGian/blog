@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
@@ -22,12 +23,22 @@ lowlight.register('typescript', ts);
 lowlight.register('csharp', csharp);
 lowlight.register('cs', csharp);
 
+const LANGUAGES = [
+    { value: 'javascript', label: 'JavaScript' },
+    { value: 'typescript', label: 'TypeScript' },
+    { value: 'html', label: 'HTML' },
+    { value: 'css', label: 'CSS' },
+    { value: 'csharp', label: 'C#' },
+];
+
 interface EditorProps {
     content: string;
     onChange: (content: string) => void;
 }
 
 const Editor = ({ content, onChange }: EditorProps) => {
+    const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
+
     const editor = useEditor({
         extensions: [
             StarterKit.configure({
@@ -56,11 +67,10 @@ const Editor = ({ content, onChange }: EditorProps) => {
         return null;
     }
 
-    const addCodeBlock = () => {
-        const language = window.prompt('Enter language (js, typescript, html, css, csharp, cs):', 'javascript');
-        if (language) {
-            editor.chain().focus().setCodeBlock({ language }).run();
-        }
+    const addCodeBlock = (e: React.MouseEvent, language: string) => {
+        e.preventDefault();
+        editor.chain().focus().setCodeBlock({ language }).run();
+        setShowLanguageDropdown(false);
     };
 
     return (
@@ -68,6 +78,7 @@ const Editor = ({ content, onChange }: EditorProps) => {
             {/* Toolbar */}
             <div className="border-b border-gray-300 bg-gray-50 p-2 flex flex-wrap gap-2">
                 <button
+                    type="button"
                     onClick={() => editor.chain().focus().toggleBold().run()}
                     className={`p-2 rounded ${editor.isActive('bold') ? 'bg-gray-200' : 'hover:bg-gray-200'}`}
                     title="Bold"
@@ -79,6 +90,7 @@ const Editor = ({ content, onChange }: EditorProps) => {
                 </button>
 
                 <button
+                    type="button"
                     onClick={() => editor.chain().focus().toggleItalic().run()}
                     className={`p-2 rounded ${editor.isActive('italic') ? 'bg-gray-200' : 'hover:bg-gray-200'}`}
                     title="Italic"
@@ -90,6 +102,7 @@ const Editor = ({ content, onChange }: EditorProps) => {
                 </button>
 
                 <button
+                    type="button"
                     onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
                     className={`p-2 rounded ${editor.isActive('heading', { level: 2 }) ? 'bg-gray-200' : 'hover:bg-gray-200'}`}
                     title="Heading"
@@ -101,6 +114,7 @@ const Editor = ({ content, onChange }: EditorProps) => {
                 </button>
 
                 <button
+                    type="button"
                     onClick={() => editor.chain().focus().toggleBulletList().run()}
                     className={`p-2 rounded ${editor.isActive('bulletList') ? 'bg-gray-200' : 'hover:bg-gray-200'}`}
                     title="Bullet List"
@@ -112,6 +126,7 @@ const Editor = ({ content, onChange }: EditorProps) => {
                 </button>
 
                 <button
+                    type="button"
                     onClick={() => {
                         const url = window.prompt('Enter URL');
                         if (url) {
@@ -127,21 +142,53 @@ const Editor = ({ content, onChange }: EditorProps) => {
                     </svg>
                 </button>
 
-                <button
-                    onClick={addCodeBlock}
-                    className={`p-2 rounded ${editor.isActive('codeBlock') ? 'bg-gray-200' : 'hover:bg-gray-200'}`}
-                    title="Code Block"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
-                        <path fill="none" d="M0 0h24v24H0z"/>
-                        <path d="M16.95 8.464l1.414-1.414 4.95 4.95-4.95 4.95-1.414-1.414L20.485 12 16.95 8.464zm-9.9 0L3.515 12l3.535 3.536-1.414 1.414L.686 12l4.95-4.95L7.05 8.464z"/>
-                    </svg>
-                </button>
+                {/* Code Block Dropdown */}
+                <div className="relative">
+                    <button
+                        type="button"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            setShowLanguageDropdown(!showLanguageDropdown)
+                        }}
+                        className={`p-2 rounded ${editor.isActive('codeBlock') ? 'bg-gray-200' : 'hover:bg-gray-200'}`}
+                        title="Code Block"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
+                            <path fill="none" d="M0 0h24v24H0z"/>
+                            <path
+                                d="M16.95 8.464l1.414-1.414 4.95 4.95-4.95 4.95-1.414-1.414L20.485 12 16.95 8.464zm-9.9 0L3.515 12l3.535 3.536-1.414 1.414L.686 12l4.95-4.95L7.05 8.464z"/>
+                        </svg>
+                    </button>
+
+                    {showLanguageDropdown && (
+                        <div
+                            className="absolute z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                            <div className="py-1" role="menu" aria-orientation="vertical">
+                                {LANGUAGES.map((lang) => (
+                                    <button
+                                        key={lang.value}
+                                        type="button"
+                                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            addCodeBlock(e, lang.value);
+                                        }}
+                                        role="menuitem"
+                                    >
+                                        {lang.label}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
             </div>
 
             {/* Editor Content */}
             <div className="p-4">
-                <EditorContent editor={editor} />
+                <EditorContent editor={editor}/>
             </div>
         </div>
     );
