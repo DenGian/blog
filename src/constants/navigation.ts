@@ -16,4 +16,8 @@ export const NAV_ITEMS: NavigationItem[] = [
         label: 'About',
         path: '/about',
     },
+    {
+        label: 'Contact',
+        path: '/contact',
+    },
 ];
