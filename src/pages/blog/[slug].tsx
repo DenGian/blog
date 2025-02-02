@@ -6,6 +6,7 @@ import dbConnect from '@/lib/mongodb';
 import Post from '@/models/Post';
 import type { IPost } from '@/types/blog';
 import ShareButtons from '@/components/blog/ShareButtons';
+import Comments from "@/components/blog/Comments";
 
 interface PostPageProps {
     post: IPost | null;
@@ -115,6 +116,10 @@ export default function PostPage({ post }: PostPageProps) {
                     </p>
                 ))}
             </div>
+
+
+            {/* Comments section */}
+            <Comments slug={post.slug} />
         </article>
     );
 }
