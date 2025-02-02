@@ -34,7 +34,7 @@ export default function EditPostPage({ post }: EditPostPageProps) {
     }
 
     const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
+        e.preventDefault(); // Belangrijk: voorkom default form submission
         setStatus('submitting');
         setError('');
 
@@ -54,8 +54,12 @@ export default function EditPostPage({ post }: EditPostPageProps) {
                 throw new Error('Failed to update post');
             }
 
+            const updatedPost = await response.json();
             setStatus('success');
-            await router.push('/admin/posts');
+
+            setTimeout(() => {
+                router.push('/admin/posts');
+            }, 100);
         } catch (err) {
             console.error('Failed to update post:', err);
             setStatus('error');
@@ -160,11 +164,22 @@ export default function EditPostPage({ post }: EditPostPageProps) {
                     <label htmlFor="content" className="block text-sm font-medium text-gray-700">
                         Content
                     </label>
-                    <div className="mt-1">
-                        <Editor
-                            content={formData.content}
-                            onChange={(newContent) => setFormData(prev => ({...prev, content: newContent}))}
-                        />
+                    <div
+                        className="mt-1"
+                        onClick={(e) => e.stopPropagation()}
+                        onSubmit={(e) => e.preventDefault()}
+                    >
+                        <div className="editor-wrapper" onKeyDown={(e) => {
+                            if (e.key === 'Enter' && e.ctrlKey) {
+                                e.preventDefault();
+                                e.stopPropagation();
+                            }
+                        }}>
+                            <Editor
+                                content={formData.content}
+                                onChange={(newContent) => setFormData(prev => ({...prev, content: newContent}))}
+                            />
+                        </div>
                     </div>
                 </div>
 
