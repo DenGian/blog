@@ -1,6 +1,26 @@
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
+import { common, createLowlight } from 'lowlight'
+import css from 'highlight.js/lib/languages/css';
+import js from 'highlight.js/lib/languages/javascript';
+import ts from 'highlight.js/lib/languages/typescript';
+import html from 'highlight.js/lib/languages/xml';
+import csharp from 'highlight.js/lib/languages/csharp';
+import 'highlight.js/styles/github-dark.css';
+
+// Create a new lowlight instance
+const lowlight = createLowlight(common);
+
+// Register languages for syntax highlighting
+lowlight.register('html', html);
+lowlight.register('css', css);
+lowlight.register('js', js);
+lowlight.register('javascript', js);
+lowlight.register('typescript', ts);
+lowlight.register('csharp', csharp);
+lowlight.register('cs', csharp);
 
 interface EditorProps {
     content: string;
@@ -10,9 +30,15 @@ interface EditorProps {
 const Editor = ({ content, onChange }: EditorProps) => {
     const editor = useEditor({
         extensions: [
-            StarterKit,
+            StarterKit.configure({
+                codeBlock: false,
+            }),
             Link.configure({
                 openOnClick: false,
+            }),
+            CodeBlockLowlight.configure({
+                lowlight,
+                defaultLanguage: 'javascript',
             }),
         ],
         content,
@@ -29,6 +55,13 @@ const Editor = ({ content, onChange }: EditorProps) => {
     if (!editor) {
         return null;
     }
+
+    const addCodeBlock = () => {
+        const language = window.prompt('Enter language (js, typescript, html, css, csharp, cs):', 'javascript');
+        if (language) {
+            editor.chain().focus().setCodeBlock({ language }).run();
+        }
+    };
 
     return (
         <div className="border border-gray-300 rounded-md">
@@ -95,7 +128,7 @@ const Editor = ({ content, onChange }: EditorProps) => {
                 </button>
 
                 <button
-                    onClick={() => editor.chain().focus().toggleCodeBlock().run()}
+                    onClick={addCodeBlock}
                     className={`p-2 rounded ${editor.isActive('codeBlock') ? 'bg-gray-200' : 'hover:bg-gray-200'}`}
                     title="Code Block"
                 >
