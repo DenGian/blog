@@ -48,7 +48,7 @@ export default function NewPostPage() {
                     date: new Date(),
                     author: {
                         name: 'Ian Mondelaers',
-                        image: '/profile-image.jpg'
+                        image: '/profile.png'
                     }
                 }),
             });
