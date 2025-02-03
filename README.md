@@ -1,40 +1,173 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Portfolio Blog
 
-## Getting Started
+A modern, full-stack blog application built to document my internship journey. This blog serves as both a portfolio piece and a platform to share my experiences, learnings, and technical insights during my internship.
 
-First, run the development server:
+## Purpose
+This blog was created as part of my internship portfolio at AP University of Applied Sciences. It serves multiple purposes:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- 📌 Document my internship experiences
+- 💻 Showcase my technical skills
+- 📚 Share knowledge and insights
+- 🚀 Demonstrate my growth as a developer
+- 🔍 Provide a platform for reflection
+
+## Tech Stack
+
+### Frontend
+
+- **Next.js** - React framework for production
+- **TypeScript** - For type safety and better developer experience
+- **Tailwind CSS** - For styling and responsive design
+- **TipTap** - Rich text editor with code syntax highlighting
+- **React Components** - Custom-built modular components
+
+### Backend
+
+- **MongoDB** - NoSQL database for storing blog posts and comments
+- **Mongoose** - MongoDB object modeling for Node.js
+- **Next.js API Routes** - Serverless API endpoints
+
+## Features
+
+### Blog Management
+
+- 🔐 Secure admin dashboard
+- ✍️ Rich text editor with support for:
+    - Markdown-style formatting
+    - Code blocks with syntax highlighting
+    - Multiple programming language support (JavaScript, TypeScript, C#, HTML, CSS)
+    - Image embedding
+- 📝 CRUD operations for blog posts
+- 🏷️ Tag-based categorization
+
+### User Experience
+
+- 🔍 Search functionality
+- 🏷️ Tag filtering
+- 📱 Responsive design
+- 📖 Pagination
+- 💬 Comments system using Giscus (GitHub Discussions)
+- 🔗 Social sharing capabilities
+
+### Content Features
+
+- 📝 Blog posts with rich text formatting
+- 🖼️ Cover images for posts
+- 📑 Post excerpts
+- ⏱️ Reading time estimates
+- 📅 Publication dates
+- 👤 Author information
+
+## Notable Packages Used
+
+- **@tiptap/react** - Rich text editor
+- **@tiptap/starter-kit** - Essential editing features
+- **@tiptap/extension-code-block-lowlight** - Code syntax highlighting
+- **lowlight** - Syntax highlighting engine
+- **mongoose** - MongoDB object modeling
+- **cloudinary** - Image management
+- **giscus** - Comments system
+
+## Project Structure
+
+```
+Directory structure:
+└── dengian-blog/
+    ├── README.md
+    ├── next.config.ts
+    ├── package.json
+    ├── postcss.config.js
+    ├── tailwind.config.js
+    ├── tsconfig.json
+    ├── public/
+    └── src/
+        ├── components/
+        │   ├── Layout.tsx
+        │   ├── Navbar.tsx
+        │   └── blog/
+        │       ├── Comments.tsx
+        │       ├── Editor.tsx
+        │       ├── PostCard.tsx
+        │       ├── PostList.tsx
+        │       ├── SearchBar.tsx
+        │       └── ShareButtons.tsx
+        ├── constants/
+        │   └── navigation.ts
+        ├── hooks/
+        │   └── useAdminAuth.ts
+        ├── lib/
+        │   └── mongodb.ts
+        ├── models/
+        │   └── Post.ts
+        ├── pages/
+        │   ├── _app.tsx
+        │   ├── _document.tsx
+        │   ├── index.tsx
+        │   ├── about/
+        │   │   └── index.tsx
+        │   ├── admin/
+        │   │   ├── index.tsx
+        │   │   └── posts/
+        │   │       ├── index.tsx
+        │   │       ├── new.tsx
+        │   │       └── [id]/
+        │   │           └── edit.tsx
+        │   ├── api/
+        │   │   └── posts/
+        │   │       ├── [id].ts
+        │   │       └── index.ts
+        │   ├── blog/
+        │   │   ├── [slug].tsx
+        │   │   └── index.tsx
+        │   └── contact/
+        │       └── index.tsx
+        ├── styles/
+        │   ├── Home.module.css
+        │   └── globals.css
+        ├── types/
+        │   └── blog.ts
+        └── utils/
+            └── formatDate.ts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features in Detail
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+### Admin Dashboard
+The admin dashboard provides a secure interface for managing blog content. It includes:
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- Post creation with rich text editing
+- Post management (edit/delete)
+- Tag management
+- Image upload capabilities
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+### Rich Text Editor
+The TipTap-based editor supports:
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Text formatting (bold, italic, headings)
+- Code blocks with syntax highlighting
+- Multiple programming language support
+- Image embedding
+- Link insertion
 
-## Learn More
+### Blog Features
 
-To learn more about Next.js, take a look at the following resources:
+- Tag-based navigation
+- Search functionality
+- Responsive design for all devices
+- Social sharing capabilities
+- Comments system using Giscus
+- Reading time estimates
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+## Deployment
+The blog is deployed using Vercel for optimal performance and reliability. The deployment process is automated through GitHub integration.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Future Improvements
+- [] Image optimization and CDN integration
+- [] Dark mode support
+- [] RSS feed
+- [] Newsletter integration
+- [] Analytics dashboard
+- [] SEO optimizations
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+## Contributing
+While this is a personal portfolio project, suggestions and feedback are always welcome. Feel free to open an issue or submit a pull request.
