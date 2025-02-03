@@ -7,18 +7,22 @@ interface PostCardProps {
 }
 
 const PostCard = ({ post }: PostCardProps) => {
+    const defaultImage = '/default-blog.png';
+
     return (
-        <article className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-            {post.coverImage && (
-                <div className="relative w-full h-48">
-                    <img
-                        src={post.coverImage}
-                        alt={post.title}
-                        className="w-full h-full object-cover"
-                    />
-                </div>
-            )}
-            <div className="p-6">
+        <article className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 flex flex-col h-full">
+            <div className="relative h-48 w-full">
+                <img
+                    src={post.coverImage || defaultImage}
+                    alt={post.title}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = defaultImage;
+                    }}
+                />
+            </div>
+            <div className="p-6 flex-grow flex flex-col">
                 <div className="flex items-center gap-2 mb-4">
                     {post.tags.map((tag) => (
                         <span
@@ -29,22 +33,25 @@ const PostCard = ({ post }: PostCardProps) => {
                         </span>
                     ))}
                 </div>
-                <h2 className="text-xl font-bold mb-2 text-gray-900 hover:text-blue-600">
-                    <Link href={`/blog/${post.slug}`}>
-                        {post.title}
-                    </Link>
-                </h2>
-                <p className="text-gray-600 mb-4 line-clamp-2">
+                <Link
+                    href={`/blog/${post.slug}`}
+                    className="text-xl font-bold mb-2 text-gray-900 hover:text-blue-600"
+                >
+                    {post.title}
+                </Link>
+                <p className="text-gray-600 mb-4 line-clamp-2 flex-grow">
                     {post.excerpt}
                 </p>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between mt-auto">
                     <div className="flex items-center">
-                        {post.author.image && (
+                        {post.author.image ? (
                             <img
                                 src={post.author.image}
                                 alt={post.author.name}
                                 className="w-8 h-8 rounded-full mr-2"
                             />
+                        ) : (
+                            <div className="w-8 h-8 rounded-full bg-gray-200 mr-2" />
                         )}
                         <span className="text-gray-700">{post.author.name}</span>
                     </div>
