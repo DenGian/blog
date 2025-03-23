@@ -49,7 +49,7 @@ export default function AboutPage() {
                             HolonCom
                         </h3>
                         <p className="text-gray-600">
-                            Beschrijving van het bedrijf.
+                            HolonCom biedt eenvoudige en betrouwbare IT-oplossingen voor professionals, waaronder all-in IT-support, cybersecurity, telefonie, webontwikkeling en softwareontwikkeling. Ze focussen op gebruiksvriendelijke en veilige technologieën, met vaste prijzen per gebruiker en device. Hun diensten helpen bedrijven efficiënter te werken met oplossingen zoals MyDesk (virtuele desktops), FileWallet (documentbeheer) en maatwerksoftware. HolonCom streeft naar directe en persoonlijke ondersteuning, zonder ingewikkelde helpdesks.
                         </p>
                     </div>
                     <div className="mb-8">
@@ -65,7 +65,7 @@ export default function AboutPage() {
                             Technologies & Skills
                         </h3>
                         <div className="flex flex-wrap gap-2">
-                            {['React', 'Next.js', 'TypeScript', 'MongoDB'].map((tech) => (
+                            {['C#', '.Net', 'CI/CD', 'NuGet'].map((tech) => (
                                 <span
                                     key={tech}
                                     className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full"
