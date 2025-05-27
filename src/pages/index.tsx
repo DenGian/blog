@@ -1,6 +1,5 @@
 import { GetServerSideProps } from 'next';
 import Link from 'next/link';
-import Image from 'next/image';
 import dbConnect from '@/lib/mongodb';
 import Post from '@/models/Post';
 import { IPost } from '@/types/blog';
