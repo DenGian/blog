@@ -46,9 +46,9 @@ export default function ContactPage() {
     return (
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="text-center mb-12">
-                <h1 className="text-4xl font-bold text-gray-900 mb-4">Contact Me</h1>
+                <h1 className="text-4xl font-bold text-gray-900 mb-4">Neem Contact Op</h1>
                 <p className="text-lg text-gray-600">
-                    Have a question or want to work together? Feel free to reach out!
+                    Heb je een vraag of wil je samenwerken? Neem gerust contact op!
                 </p>
             </div>
 
@@ -56,7 +56,7 @@ export default function ContactPage() {
                 {/* Name Input */}
                 <div>
                     <label htmlFor="name" className="block text-sm font-semibold text-gray-700">
-                        Name
+                        Naam
                     </label>
                     <input
                         type="text"
@@ -66,14 +66,14 @@ export default function ContactPage() {
                         value={formData.name}
                         onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                         className={inputClassName}
-                        placeholder="Your name"
+                        placeholder="Jouw naam"
                     />
                 </div>
 
                 {/* Email Input */}
                 <div>
                     <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
-                        Email
+                        E-mail
                     </label>
                     <input
                         type="email"
@@ -83,14 +83,14 @@ export default function ContactPage() {
                         value={formData.email}
                         onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                         className={inputClassName}
-                        placeholder="Your email"
+                        placeholder="Jouw e-mailadres"
                     />
                 </div>
 
                 {/* Subject Input */}
                 <div>
                     <label htmlFor="subject" className="block text-sm font-semibold text-gray-700">
-                        Subject
+                        Onderwerp
                     </label>
                     <input
                         type="text"
@@ -100,14 +100,14 @@ export default function ContactPage() {
                         value={formData.subject}
                         onChange={(e) => setFormData(prev => ({ ...prev, subject: e.target.value }))}
                         className={inputClassName}
-                        placeholder="The subject"
+                        placeholder="Het onderwerp"
                     />
                 </div>
 
                 {/* Message Input */}
                 <div>
                     <label htmlFor="message" className="block text-sm font-semibold text-gray-700">
-                        Message
+                        Bericht
                     </label>
                     <textarea
                         id="message"
@@ -117,7 +117,7 @@ export default function ContactPage() {
                         value={formData.message}
                         onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
                         className={textareaClassName}
-                        placeholder="Your message"
+                        placeholder="Jouw bericht"
                     />
                 </div>
 
@@ -130,7 +130,7 @@ export default function ContactPage() {
                             status === 'sending' ? 'opacity-75 cursor-not-allowed' : ''
                         }`}
                     >
-                        {status === 'sending' ? 'Sending...' : 'Send Message'}
+                        {status === 'sending' ? 'Verzenden...' : 'Verstuur Bericht'}
                     </button>
                 </div>
 
@@ -145,7 +145,7 @@ export default function ContactPage() {
                             </div>
                             <div className="ml-3">
                                 <p className="text-sm font-medium text-green-800">
-                                    Message sent successfully!
+                                    Bericht succesvol verzonden!
                                 </p>
                             </div>
                         </div>
@@ -162,7 +162,7 @@ export default function ContactPage() {
                             </div>
                             <div className="ml-3">
                                 <p className="text-sm font-medium text-red-800">
-                                    Failed to send message. Please try again.
+                                    Verzenden mislukt. Probeer het opnieuw.
                                 </p>
                             </div>
                         </div>
