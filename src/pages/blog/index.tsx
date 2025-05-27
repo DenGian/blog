@@ -43,7 +43,7 @@ export default function BlogPage({
             <div className="text-center mb-12">
                 <h1 className="text-4xl font-bold text-gray-900 mb-4">Blog</h1>
                 <p className="text-lg text-gray-600">
-                    Explore my thoughts, experiences and learnings during my internship.
+                    Ontdek mijn gedachten, ervaringen en leermomenten tijdens mijn stage.
                 </p>
             </div>
 
