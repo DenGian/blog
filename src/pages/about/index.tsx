@@ -32,16 +32,14 @@ export default function AboutPage() {
                     </Link>
                 </div>
                 <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                    An enthusiastic and detail-oriented Junior Full Stack Developer who can work either independently or as part of a team.
-                    Eager and fast to learn new subjects efficiently under time pressure and adapts quickly.
-                    Solution-driven professional focused on improving customer satisfaction and business processes.
+                    Een enthousiaste en detailgerichte Junior Full Stack Developer die zowel zelfstandig als in teamverband effectief kan werken. Ik leer snel en efficiënt nieuwe onderwerpen, zelfs onder tijdsdruk, en pas me vlot aan veranderende situaties aan. Als oplossingsgerichte professional streef ik ernaar de klanttevredenheid en bedrijfsprocessen continu te verbeteren.
                 </p>
             </section>
 
             {/* Internship Section */}
             <section className="mb-16">
                 <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                    About My Internship
+                    Over mijn stage
                 </h2>
                 <div className="bg-white rounded-lg shadow-lg p-8">
                     <div className="mb-8">
@@ -57,7 +55,7 @@ export default function AboutPage() {
                             Junior Software Developer
                         </h3>
                         <p className="text-gray-600">
-                            Beschrijving van de rol.
+                            Als Junior Software Engineer bij HolonCom draag ik actief bij aan de softwareontwikkeling en het verbeteren van interne processen. Mijn taken omvatten het refactoren van bestaande code, het ontwikkelen en beheren van NuGet packages voor herbruikbare componenten, en het automatiseren van deployment pipelines (CI/CD). Ik werk voornamelijk in C# (.NET) en ben verantwoordelijk voor het schrijven van unit tests om de kwaliteit te waarborgen. Daarnaast los ik complexe technische problemen op en documenteer ik mijn werk om de kennisdeling te bevorderen. Ik werk actief aan het efficiënter maken van de softwarelevering van HolonCom.
                         </p>
                     </div>
                     <div>
@@ -65,8 +63,7 @@ export default function AboutPage() {
                             Technologies & Skills
                         </h3>
                         <div className="flex flex-wrap gap-2">
-                            {['C#', '.Net', 'CI/CD', 'NuGet'].map((tech) => (
-                                <span
+                            {['C#', '.Net', 'CI/CD', 'NuGet', 'Docker', 'Git', 'Unit Tests (xUnit)', 'Gitea', 'Debugging', 'Problem analysis'].map((tech) => (                                <span
                                     key={tech}
                                     className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full"
                                 >
@@ -81,21 +78,20 @@ export default function AboutPage() {
             {/* Blog Purpose Section */}
             <section>
                 <h2 className="text-3xl font-bold text-gray-900 mb-6">
-                    About This Blog
+                    Over deze blog
                 </h2>
                 <div className="prose prose-lg max-w-none text-gray-600">
                     <p>
-                        Dit blog dient als mijn portfolio en documentatie van mijn stage-ervaring.
-                        Hier deel ik mijn leermomenten, uitdagingen en successen tijdens mijn stage.
+                        Welkom op mijn persoonlijke stageblog! Dit is meer dan zomaar een portfolio; het is mijn digitale logboek van een intensieve en leerzame periode als Junior Software Engineer bij HolonCom. Hier neem ik je mee achter de schermen van mijn dagelijkse avonturen in de IT-wereld, vol met code, uitdagingen en doorbraken.
                     </p>
                     <p className="mt-4">
-                        Je vindt hier wekelijkse updates over:
+                        Ik deel wekelijkse updates over:
                     </p>
                     <ul className="mt-4 space-y-2">
-                        <li>Technische uitdagingen en oplossingen</li>
-                        <li>Nieuwe technologieën en tools die ik leer</li>
-                        <li>Projecten waaraan ik werk</li>
-                        <li>Teamwork en bedrijfscultuur ervaringen</li>
+                        <li>Complexe technische vraagstukken: Van het temmen van null-references en caching issues tot het automatiseren van NuGet deployments en het opzetten van CI/CD pijplijnen met Gitea Actions. Ik beschrijf hoe ik deze problemen aanpak en de oplossingen die ik vond.</li>
+                        <li>De duik in nieuwe technologieën: Een ontdekkingstocht langs talen en tools zoals C# en .NET, de ins en outs van Git en Gitea, en zelfs het experimenteren met AI-tools zoals Cursor en de ontwikkeling van een eigen VS Code extensie.</li>
+                        <li>Mijn projecten bij HolonCom: Van het optimaliseren van applicaties, Unit Testing en Code Refactoring tot het bouwen van herbruikbare NuGet packages voor klantprojecten.</li>
+                        <li>Persoonlijke en professionele groei: de open cultuur van HolonCom die ruimte biedt voor persoonlijke reflectie en het leren omgaan met uitdagingen en fouten.</li>
                     </ul>
                 </div>
             </section>
