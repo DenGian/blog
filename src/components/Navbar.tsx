@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { NAV_ITEMS } from '@/constants/navigation';
 
@@ -13,8 +14,14 @@ const Navbar = () => {
                 <div className="flex items-center justify-between h-16">
                     {/* Logo/Brand */}
                     <div className="flex-shrink-0">
-                        <Link href="/" className="text-xl font-bold text-gray-800">
-                            DenGian Blog
+                        <Link href="/" className="flex items-center">
+                            <Image
+                                src="/logo_DenGian.png"
+                                alt="DenGian Logo"
+                                width={120}
+                                height={40}
+                                className="h-14 w-auto"
+                            />
                         </Link>
                     </div>
 
