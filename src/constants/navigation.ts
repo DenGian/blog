@@ -21,7 +21,7 @@ export const NAV_ITEMS: NavigationItem[] = [
 		path: "/contact",
 	},
 	{
-		label: "Log in",
+		label: "Log In",
 		path: "/admin",
 	},
 ];
