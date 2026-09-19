@@ -1,0 +1,9 @@
+.next
+node_modules
+coverage
+playwright-report
+test-results
+.local-backups
+public
+index.svg
+package-lock.json
