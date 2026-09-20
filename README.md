@@ -57,26 +57,28 @@ npm run dev
 
 ### Environment variables
 
-| Name                             | Scope  | Required       | Purpose                                                   |
-| -------------------------------- | ------ | -------------- | --------------------------------------------------------- |
-| `MONGODB_URI`                    | server | yes            | Least-privilege MongoDB connection string                 |
-| `MONGODB_DATABASE`               | server | recommended    | Database name; defaults to `blog_portfolio`               |
-| `SITE_URL`                       | server | production     | Canonical HTTPS origin; never set production to localhost |
-| `ADMIN_PASSWORD_HASH`            | server | for CMS        | bcrypt hash for the sole administrator                    |
-| `SESSION_SECRET`                 | server | for CMS        | At least 32 random characters for session encryption      |
-| `UPSTASH_REDIS_REST_URL`         | server | production CMS | Durable login throttling endpoint                         |
-| `UPSTASH_REDIS_REST_TOKEN`       | server | production CMS | Durable login throttling token                            |
-| `CLOUDINARY_CLOUD_NAME`          | server | optional       | Cloudinary account name                                   |
-| `CLOUDINARY_API_KEY`             | server | optional       | Signed upload API identifier                              |
-| `CLOUDINARY_API_SECRET`          | server | optional       | Signed upload secret                                      |
-| `NEXT_PUBLIC_GISCUS_REPO`        | public | optional       | Public `owner/repository` name                            |
-| `NEXT_PUBLIC_GISCUS_REPO_ID`     | public | optional       | Giscus repository identifier                              |
-| `NEXT_PUBLIC_GISCUS_CATEGORY`    | public | optional       | Discussions category                                      |
-| `NEXT_PUBLIC_GISCUS_CATEGORY_ID` | public | optional       | Giscus category identifier                                |
-| `NEXT_PUBLIC_GITHUB_URL`         | public | optional       | Verified author GitHub profile                            |
-| `NEXT_PUBLIC_LINKEDIN_URL`       | public | optional       | Verified author LinkedIn profile                          |
+| Name                             | Scope  | Required       | Purpose                                              |
+| -------------------------------- | ------ | -------------- | ---------------------------------------------------- |
+| `MONGODB_URI`                    | server | yes            | Least-privilege MongoDB connection string            |
+| `MONGODB_DATABASE`               | server | recommended    | Database name; defaults to `blog_portfolio`          |
+| `SITE_URL`                       | server | production     | Preferred canonical HTTPS production origin          |
+| `ADMIN_PASSWORD_HASH`            | server | for CMS        | bcrypt hash for the sole administrator               |
+| `SESSION_SECRET`                 | server | for CMS        | At least 32 random characters for session encryption |
+| `UPSTASH_REDIS_REST_URL`         | server | production CMS | Durable login throttling endpoint                    |
+| `UPSTASH_REDIS_REST_TOKEN`       | server | production CMS | Durable login throttling token                       |
+| `CLOUDINARY_CLOUD_NAME`          | server | optional       | Cloudinary account name                              |
+| `CLOUDINARY_API_KEY`             | server | optional       | Signed upload API identifier                         |
+| `CLOUDINARY_API_SECRET`          | server | optional       | Signed upload secret                                 |
+| `NEXT_PUBLIC_GISCUS_REPO`        | public | optional       | Public `owner/repository` name                       |
+| `NEXT_PUBLIC_GISCUS_REPO_ID`     | public | optional       | Giscus repository identifier                         |
+| `NEXT_PUBLIC_GISCUS_CATEGORY`    | public | optional       | Discussions category                                 |
+| `NEXT_PUBLIC_GISCUS_CATEGORY_ID` | public | optional       | Giscus category identifier                           |
+| `NEXT_PUBLIC_GITHUB_URL`         | public | optional       | Verified author GitHub profile                       |
+| `NEXT_PUBLIC_LINKEDIN_URL`       | public | optional       | Verified author LinkedIn profile                     |
 
 Only values explicitly prefixed `NEXT_PUBLIC_` enter the browser bundle. Password hashes, session keys, database credentials, and rate-limit tokens must never use that prefix.
+
+Site URL resolution is deliberate: a Vercel Preview uses its HTTPS `VERCEL_URL` so protected mutations and preview metadata share the deployed origin; Production prefers `SITE_URL`, then `VERCEL_PROJECT_PRODUCTION_URL`, then `VERCEL_URL`; non-Vercel development prefers `SITE_URL` and otherwise uses `http://localhost:3000`. Vercel supplies those system hostnames without a scheme when system environment variables are exposed. Production rejects HTTP, loopback, credential-bearing, and placeholder origins.
 
 ## Content safety and migration
 
@@ -115,7 +117,7 @@ npm run build
 npm audit
 ```
 
-`npm run test:e2e` starts a loopback-only temporary MongoDB on a test-only database, seeds deterministic fixtures, starts the real application with test credentials, runs all browser scenarios, drops that database, and removes its temporary files. It fails closed unless both the host and database name are unmistakably test-only. It requires local `mongod` and a Playwright Chromium installation (`npx playwright install chromium`). CI installs both and runs the suite.
+By default, `npm run test:e2e` starts a loopback-only temporary `mongod` on a test-only database, seeds deterministic fixtures, starts the real application with test credentials, runs all browser scenarios, drops and verifies removal of that database, stops every child, and removes its temporary files. It requires local `mongod` and Playwright Chromium (`npx playwright install chromium`). In CI, `E2E_MONGODB_URI=mongodb://127.0.0.1:27017` selects the MongoDB instance supplied by the workflow: the runner creates a unique `journal_e2e_ci_*` database, drops and verifies only that database, and never stops the external server. The dedicated variable rejects credentials, non-loopback hosts, URI database names/options, and production-like targets; the runner never falls back to application `MONGODB_URI`.
 
 ## Optional integrations
 

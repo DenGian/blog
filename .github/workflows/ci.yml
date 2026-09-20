@@ -13,6 +13,9 @@ jobs:
       MONGODB_URI: mongodb://127.0.0.1:27017/ci-placeholder
       MONGODB_DATABASE: journal_ci
       SITE_URL: https://example.invalid
+      # Dedicated loopback server URI: the E2E runner creates and drops its own
+      # uniquely named CI database and never starts or stops this MongoDB process.
+      E2E_MONGODB_URI: mongodb://127.0.0.1:27017
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

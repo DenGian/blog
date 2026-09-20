@@ -1,4 +1,5 @@
 import "server-only";
+import { validateRateLimitEnvironment } from "@/lib/env";
 const localAttempts = new Map<string, number[]>();
 export function resetDevelopmentRateLimits(): void {
   localAttempts.clear();
@@ -11,8 +12,9 @@ export type RateLimitResult = {
 export async function checkLoginRateLimit(
   key: string,
 ): Promise<RateLimitResult> {
-  const redisUrl = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  const env = validateRateLimitEnvironment();
+  const redisUrl = env.UPSTASH_REDIS_REST_URL;
+  const token = env.UPSTASH_REDIS_REST_TOKEN;
   if (redisUrl && token) {
     try {
       const response = await fetch(`${redisUrl}/pipeline`, {

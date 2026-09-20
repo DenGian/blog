@@ -31,4 +31,14 @@ describe("mutation origin protection", () => {
       hasValidMutationOrigin(request({ origin: "https://journal.example" })),
     ).toBe(true);
   });
+  it("accepts the current Vercel preview origin", () => {
+    process.env.VERCEL_ENV = "preview";
+    process.env.VERCEL_URL = "journal-pr-2.vercel.app";
+    process.env.SITE_URL = "https://journal.example";
+    expect(
+      hasValidMutationOrigin(
+        request({ origin: "https://journal-pr-2.vercel.app" }),
+      ),
+    ).toBe(true);
+  });
 });
