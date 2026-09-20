@@ -1,58 +1,37 @@
-import mongoose from 'mongoose';
-import type { IPost } from '@/types/blog';
-
-const postSchema = new mongoose.Schema<IPost>(
-    {
-        title: {
-            type: String,
-            required: [true, 'Title is required'],
-            trim: true,
-        },
-        slug: {
-            type: String,
-            required: [true, 'Slug is required'],
-            unique: true,
-            trim: true,
-        },
-        content: {
-            type: String,
-            required: [true, 'Content is required'],
-        },
-        excerpt: {
-            type: String,
-            required: [true, 'Excerpt is required'],
-        },
-        coverImage: {
-            type: String,
-        },
-        date: {
-            type: Date,
-            default: Date.now,
-        },
-        tags: [{
-            type: String,
-            trim: true,
-        }],
-        author: {
-            name: {
-                type: String,
-                required: [true, 'Author name is required'],
-            },
-            image: {
-                type: String,
-            },
-        },
-        readingTime: {
-            type: Number,
-        },
+import "server-only";
+import {
+  Schema,
+  model,
+  models,
+  type InferSchemaType,
+  type Model,
+} from "mongoose";
+const postSchema = new Schema(
+  {
+    title: { type: String, required: true, trim: true },
+    slug: { type: String, required: true, trim: true },
+    content: { type: String, required: true },
+    excerpt: { type: String, required: true },
+    coverImage: { type: String, default: "" },
+    date: { type: Date, default: Date.now },
+    tags: [{ type: String, trim: true }],
+    author: {
+      name: { type: String, default: "Ian Mondelaers" },
+      image: { type: String, default: "/profile.png" },
     },
-    {
-        timestamps: true,
-    }
+    readingTime: Number,
+    status: { type: String, enum: ["draft", "published"] },
+    publishedAt: Date,
+    seoTitle: String,
+    seoDescription: String,
+    schemaVersion: Number,
+  },
+  { timestamps: true, collection: "posts", strict: true, autoIndex: false },
 );
-
-// Add index for better query performance
+postSchema.index({ slug: 1 }, { unique: true });
+postSchema.index({ status: 1, publishedAt: -1 });
 postSchema.index({ tags: 1 });
-postSchema.index({ date: -1 });
-
-export default mongoose.models.Post || mongoose.model<IPost>('Post', postSchema, 'posts');
+export type PostDocument = InferSchemaType<typeof postSchema>;
+export const PostModel =
+  (models.Post as Model<PostDocument> | undefined) ??
+  model<PostDocument>("Post", postSchema);

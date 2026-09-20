@@ -1,0 +1,36 @@
+name: Quality
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      MONGODB_URI: mongodb://127.0.0.1:27017/ci-placeholder
+      MONGODB_DATABASE: journal_ci
+      SITE_URL: https://example.invalid
+      # Dedicated loopback server URI: the E2E runner creates and drops its own
+      # uniquely named CI database and never starts or stops this MongoDB process.
+      E2E_MONGODB_URI: mongodb://127.0.0.1:27017
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - uses: supercharge/mongodb-github-action@1.12.0
+        with:
+          mongodb-version: 8.0
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm test
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
+      - run: npm run build
+      - run: npm audit --audit-level=high
