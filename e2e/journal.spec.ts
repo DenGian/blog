@@ -7,6 +7,13 @@ async function login(page: Page) {
   await page.getByRole("button", { name: "Veilig aanmelden" }).click();
   await expect(page).toHaveURL(/\/admin$/);
 }
+async function expectNotFound(page: Page, path: string) {
+  const response = await page.goto(path);
+  expect(response?.status()).toBe(404);
+  await expect(
+    page.getByRole("heading", { name: "Deze pagina bestaat niet." }),
+  ).toBeVisible();
+}
 test("public navigation, search, tags, and 404", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("link", { name: "Lees het journaal" }).click();
@@ -24,8 +31,7 @@ test("public navigation, search, tags, and 404", async ({ page }) => {
   ).toBeVisible();
   await page.getByRole("link", { name: "Docker fundamentals" }).click();
   await expect(page).toHaveURL(/docker-fundamentals/);
-  await page.goto("/blog/unknown-article");
-  await expect(page).toHaveTitle(/niet gevonden/i);
+  await expectNotFound(page, "/blog/unknown-article");
 });
 test("protected route, invalid login, secure session, and logout", async ({
   page,
@@ -64,8 +70,7 @@ test("draft lifecycle, protected preview, publish, edit, unpublish, and API reje
     .fill("Initial safe browser content");
   await page.getByRole("button", { name: "Bewaar als concept" }).click();
   await expect(page.getByText("E2E lifecycle article")).toBeVisible();
-  await page.goto("/blog/e2e-lifecycle-article");
-  await expect(page).toHaveTitle(/niet gevonden/i);
+  await expectNotFound(page, "/blog/e2e-lifecycle-article");
   expect(await (await request.get("/sitemap.xml")).text()).not.toContain(
     "e2e-lifecycle-article",
   );
@@ -94,8 +99,7 @@ test("draft lifecycle, protected preview, publish, edit, unpublish, and API reje
   await page.getByRole("link", { name: "Bewerk" }).first().click();
   await page.getByRole("button", { name: "Bewaar als concept" }).click();
   await expect(page).toHaveURL(/\/admin$/);
-  await page.goto("/blog/e2e-lifecycle-article");
-  await expect(page).toHaveTitle(/niet gevonden/i);
+  await expectNotFound(page, "/blog/e2e-lifecycle-article");
   expect(await (await request.get("/sitemap.xml")).text()).not.toContain(
     "e2e-lifecycle-article",
   );

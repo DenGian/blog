@@ -9,12 +9,11 @@ import { logOperationalError } from "@/lib/operational-log";
 export const dynamic = "force-dynamic";
 type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const post = await getPublishedPost((await params).slug).catch(() => null);
-  if (!post)
-    return {
-      title: "Artikel niet gevonden",
-      robots: { index: false, follow: false },
-    };
+  const post = await getPublishedPost((await params).slug).catch((error) => {
+    logOperationalError("article metadata retrieval", error);
+    return null;
+  });
+  if (!post) notFound();
   const path = `/blog/${post.slug}`;
   return {
     title: post.seoTitle ?? post.title,
