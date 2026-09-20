@@ -8,6 +8,7 @@ import { sanitizePostHtml } from "@/domain/posts/sanitize";
 import { slugWithSuffix } from "@/domain/posts/slug";
 import type { PostInput } from "@/domain/posts/schema";
 import type { PostPageResult, PostView } from "@/domain/posts/types";
+import { legacyCoverForSlug } from "@/domain/posts/legacy-covers";
 
 const publicFilter = {
   $or: [{ status: "published" }, { status: { $exists: false } }],
@@ -48,7 +49,7 @@ function toView(post: LeanPost): PostView {
     content: sanitizePostHtml(post.content),
     excerpt: post.excerpt,
     tags: post.tags ?? [],
-    coverImage: post.coverImage || null,
+    coverImage: legacyCoverForSlug(post.slug) ?? post.coverImage ?? null,
     status: legacy
       ? "published"
       : post.status === "published"
@@ -64,7 +65,28 @@ function toView(post: LeanPost): PostView {
   };
 }
 function sortDate() {
-  return { publishedAt: -1 as const, date: -1 as const, _id: -1 as const };
+  return {
+    publishedAt: -1 as const,
+    date: -1 as const,
+    createdAt: -1 as const,
+    _id: -1 as const,
+  };
+}
+export async function listAllPublishedPosts(): Promise<PostView[]> {
+  await connectDatabase();
+  const batchSize = 100;
+  const maximum = 5_000;
+  const output: PostView[] = [];
+  for (let offset = 0; offset < maximum; offset += batchSize) {
+    const batch = await PostModel.find(publicFilter)
+      .sort(sortDate())
+      .skip(offset)
+      .limit(batchSize)
+      .lean();
+    output.push(...(batch as unknown as LeanPost[]).map(toView));
+    if (batch.length < batchSize) return output;
+  }
+  throw new Error("Published post safety limit exceeded.");
 }
 
 export async function listPublishedPosts(
@@ -127,39 +149,11 @@ export async function getPostById(id: string): Promise<PostView | null> {
 export async function getAdjacentPosts(
   post: PostView,
 ): Promise<{ previous: PostView | null; next: PostView | null }> {
-  await connectDatabase();
-  const date = new Date(post.publishedAt ?? post.createdAt);
-  const [previous, next] = await Promise.all([
-    PostModel.findOne({
-      $and: [
-        publicFilter,
-        {
-          $or: [
-            { publishedAt: { $lt: date } },
-            { status: { $exists: false }, date: { $lt: date } },
-          ],
-        },
-      ],
-    })
-      .sort(sortDate())
-      .lean(),
-    PostModel.findOne({
-      $and: [
-        publicFilter,
-        {
-          $or: [
-            { publishedAt: { $gt: date } },
-            { status: { $exists: false }, date: { $gt: date } },
-          ],
-        },
-      ],
-    })
-      .sort({ publishedAt: 1, date: 1 })
-      .lean(),
-  ]);
+  const ordered = await listAllPublishedPosts();
+  const index = ordered.findIndex((candidate) => candidate.id === post.id);
   return {
-    previous: previous ? toView(previous as unknown as LeanPost) : null,
-    next: next ? toView(next as unknown as LeanPost) : null,
+    previous: index >= 0 ? (ordered[index + 1] ?? null) : null,
+    next: index > 0 ? (ordered[index - 1] ?? null) : null,
   };
 }
 export async function getTags(): Promise<string[]> {

@@ -6,7 +6,7 @@ const csp = [
   "form-action 'self'",
   "frame-ancestors 'none'",
   "object-src 'none'",
-  "script-src 'self' 'unsafe-inline' https://giscus.app",
+  `script-src 'self' 'unsafe-inline'${process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""} https://giscus.app`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https:",
   "font-src 'self' data:",
@@ -16,11 +16,11 @@ const csp = [
 ].join("; ");
 
 const nextConfig: NextConfig = {
+  allowedDevOrigins: ["127.0.0.1"],
   agentRules: false,
   reactStrictMode: true,
   poweredByHeader: false,
   images: {
-    remotePatterns: [{ protocol: "https", hostname: "**" }],
     formats: ["image/avif", "image/webp"],
   },
   async headers() {

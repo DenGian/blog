@@ -15,7 +15,7 @@ export function RichTextEditor({
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
-      StarterKit.configure({ codeBlock: false }),
+      StarterKit.configure({ codeBlock: false, link: false }),
       Link.configure({
         openOnClick: false,
         autolink: false,
@@ -26,7 +26,12 @@ export function RichTextEditor({
     content: value,
     onUpdate: ({ editor: instance }) => onChange(instance.getHTML()),
     editorProps: {
-      attributes: { class: "editor-content", "aria-label": "Artikelinhoud" },
+      attributes: {
+        class: "editor-content",
+        role: "textbox",
+        "aria-label": "Artikelinhoud",
+        "aria-multiline": "true",
+      },
     },
   });
   if (!editor) return <div className="editor-loading">Editor laden…</div>;

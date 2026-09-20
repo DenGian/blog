@@ -1,8 +1,10 @@
 import "server-only";
+import { validateServerEnvironment } from "@/lib/env";
 export function isMediaConfigured(): boolean {
+  const env = validateServerEnvironment();
   return Boolean(
-    process.env.CLOUDINARY_CLOUD_NAME &&
-    process.env.CLOUDINARY_API_KEY &&
-    process.env.CLOUDINARY_API_SECRET,
+    env.CLOUDINARY_CLOUD_NAME &&
+    env.CLOUDINARY_API_KEY &&
+    env.CLOUDINARY_API_SECRET,
   );
 }

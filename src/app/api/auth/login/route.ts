@@ -4,7 +4,7 @@ import { z } from "zod";
 import { getAdminSession } from "@/auth/session";
 import { hasValidMutationOrigin } from "@/auth/origin";
 import { checkLoginRateLimit } from "@/auth/rate-limit";
-import { isAuthConfigured } from "@/lib/env";
+import { getClientRateLimitKey, isAuthConfigured } from "@/lib/env";
 const schema = z.object({ password: z.string().min(1).max(200) }).strict();
 export async function POST(request: NextRequest) {
   if (!hasValidMutationOrigin(request))
@@ -12,16 +12,18 @@ export async function POST(request: NextRequest) {
       { error: "Ongeldige aanvraagbron." },
       { status: 403 },
     );
-  if (!isAuthConfigured())
+  let configured = false;
+  try {
+    configured = isAuthConfigured();
+  } catch {
+    configured = false;
+  }
+  if (!configured)
     return NextResponse.json(
       { error: "Admin-login is nog niet geconfigureerd." },
       { status: 503 },
     );
-  const forwarded = request.headers
-    .get("x-forwarded-for")
-    ?.split(",")[0]
-    ?.trim();
-  const key = forwarded || "local";
+  const key = getClientRateLimitKey(request.headers);
   const limit = await checkLoginRateLimit(key);
   if (!limit.allowed)
     return NextResponse.json(

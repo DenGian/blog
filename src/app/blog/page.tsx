@@ -4,6 +4,7 @@ import { PostCard } from "@/components/posts/PostCard";
 import { getTags, listPublishedPosts } from "@/data/posts";
 import { listQuerySchema } from "@/domain/posts/schema";
 import type { PostPageResult } from "@/domain/posts/types";
+import { logOperationalError } from "@/lib/operational-log";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Artikelen",
@@ -31,7 +32,9 @@ export default async function BlogPage({
   let tags: string[] = [];
   try {
     [result, tags] = await Promise.all([listPublishedPosts(query), getTags()]);
-  } catch {}
+  } catch (error) {
+    logOperationalError("blog index retrieval", error);
+  }
   const hrefFor = (page: number) => {
     const params = new URLSearchParams();
     if (query.search) params.set("search", query.search);
@@ -63,7 +66,7 @@ export default async function BlogPage({
           </button>
         </div>
       </form>
-      <nav className="filters" aria-label="Filter op onderwerp">
+      <nav className="filters" aria-label="Populaire onderwerpen">
         <Link
           className={!query.tag ? "active" : ""}
           href={
@@ -74,7 +77,7 @@ export default async function BlogPage({
         >
           Alles
         </Link>
-        {tags.map((tag) => (
+        {tags.slice(0, 8).map((tag) => (
           <Link
             key={tag}
             className={query.tag === tag ? "active" : ""}
@@ -84,6 +87,22 @@ export default async function BlogPage({
           </Link>
         ))}
       </nav>
+      {tags.length > 8 && (
+        <details className="all-filters">
+          <summary>Alle onderwerpen ({tags.length})</summary>
+          <nav className="filters" aria-label="Alle onderwerpen">
+            {tags.map((tag) => (
+              <Link
+                key={tag}
+                className={query.tag === tag ? "active" : ""}
+                href={`/blog?tag=${encodeURIComponent(tag)}${query.search ? `&search=${encodeURIComponent(query.search)}` : ""}`}
+              >
+                {tag}
+              </Link>
+            ))}
+          </nav>
+        </details>
+      )}
       {result.posts.length ? (
         <>
           <p className="result-count">
@@ -95,23 +114,19 @@ export default async function BlogPage({
             ))}
           </div>
           <nav className="pagination" aria-label="Paginering">
-            <Link
-              aria-disabled={result.page <= 1}
-              tabIndex={result.page <= 1 ? -1 : 0}
-              href={hrefFor(Math.max(1, result.page - 1))}
-            >
-              ← Vorige
-            </Link>
+            {result.page <= 1 ? (
+              <span aria-disabled="true">← Vorige</span>
+            ) : (
+              <Link href={hrefFor(result.page - 1)}>← Vorige</Link>
+            )}
             <span>
               Pagina {result.page} van {result.totalPages}
             </span>
-            <Link
-              aria-disabled={result.page >= result.totalPages}
-              tabIndex={result.page >= result.totalPages ? -1 : 0}
-              href={hrefFor(Math.min(result.totalPages, result.page + 1))}
-            >
-              Volgende →
-            </Link>
+            {result.page >= result.totalPages ? (
+              <span aria-disabled="true">Volgende →</span>
+            ) : (
+              <Link href={hrefFor(result.page + 1)}>Volgende →</Link>
+            )}
           </nav>
         </>
       ) : (

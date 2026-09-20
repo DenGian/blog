@@ -2,10 +2,35 @@ import Link from "next/link";
 import { listAllPosts } from "@/data/posts";
 import { DeleteButton } from "@/components/admin/DeleteButton";
 import { requireAdminPage } from "@/auth/require-admin";
+import { logOperationalError } from "@/lib/operational-log";
 export const dynamic = "force-dynamic";
 export default async function AdminDashboard() {
   await requireAdminPage();
-  const posts = await listAllPosts().catch(() => []);
+  let posts;
+  try {
+    posts = await listAllPosts();
+  } catch (error) {
+    logOperationalError("admin post retrieval", error);
+    const unavailable =
+      error instanceof Error && error.message === "Database connection failed.";
+    return (
+      <div className="admin-main">
+        <div className="empty-state" role="alert">
+          <h1>
+            {unavailable
+              ? "Database tijdelijk niet bereikbaar"
+              : "Artikelen konden niet worden geladen"}
+          </h1>
+          <p>
+            {unavailable
+              ? "De inhoudsservice reageert momenteel niet."
+              : "Er trad een onverwachte fout op bij het ophalen van de artikelen."}{" "}
+            Probeer het later opnieuw.
+          </p>
+        </div>
+      </div>
+    );
+  }
   const drafts = posts.filter((post) => post.status === "draft").length;
   return (
     <div className="admin-main">

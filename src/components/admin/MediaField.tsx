@@ -61,7 +61,14 @@ export function MediaField({
           HTTPS-URL’s blijven werken.
         </p>
       )}
-      {message && <p role="status">{message}</p>}
+      {message && (
+        <p
+          role={message.includes("geüpload") ? "status" : "alert"}
+          aria-live="polite"
+        >
+          {message}
+        </p>
+      )}
     </div>
   );
 }

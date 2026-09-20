@@ -1,5 +1,8 @@
 import "server-only";
 const localAttempts = new Map<string, number[]>();
+export function resetDevelopmentRateLimits(): void {
+  localAttempts.clear();
+}
 export type RateLimitResult = {
   allowed: boolean;
   retryAfter: number;

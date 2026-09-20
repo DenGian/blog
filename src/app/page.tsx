@@ -2,12 +2,14 @@ import Link from "next/link";
 import { PostCard } from "@/components/posts/PostCard";
 import { listPublishedPosts } from "@/data/posts";
 import type { PostView } from "@/domain/posts/types";
+import { logOperationalError } from "@/lib/operational-log";
 export const dynamic = "force-dynamic";
 export default async function HomePage() {
   let posts: PostView[] = [];
   try {
     posts = (await listPublishedPosts({ limit: 4 })).posts;
-  } catch {
+  } catch (error) {
+    logOperationalError("homepage post retrieval", error);
     posts = [];
   }
   return (

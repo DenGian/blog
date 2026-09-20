@@ -5,6 +5,7 @@ import { CoverImage } from "@/components/posts/CoverImage";
 import { Comments } from "@/components/posts/Comments";
 import { getAdjacentPosts, getPublishedPost } from "@/data/posts";
 import { getSiteUrl } from "@/lib/env";
+import { logOperationalError } from "@/lib/operational-log";
 export const dynamic = "force-dynamic";
 type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -34,12 +35,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 export default async function ArticlePage({ params }: Props) {
-  const post = await getPublishedPost((await params).slug).catch(() => null);
+  const slug = (await params).slug;
+  const post = await getPublishedPost(slug).catch((error) => {
+    logOperationalError("article retrieval", error);
+    return null;
+  });
   if (!post) notFound();
-  const adjacent = await getAdjacentPosts(post).catch(() => ({
-    previous: null,
-    next: null,
-  }));
+  const adjacent = await getAdjacentPosts(post).catch((error) => {
+    logOperationalError("adjacent article retrieval", error);
+    return { previous: null, next: null };
+  });
   const published = new Intl.DateTimeFormat("nl-BE", {
     day: "numeric",
     month: "long",

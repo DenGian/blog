@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { authorizeMutation } from "@/auth/authorize";
 import { postInputSchema } from "@/domain/posts/schema";
 import { deletePost, updatePost } from "@/data/posts";
+import { isDuplicateKeyError } from "@/data/errors";
 type Context = { params: Promise<{ id: string }> };
 export async function PUT(request: NextRequest, context: Context) {
   const denied = await authorizeMutation(request);
@@ -22,7 +23,15 @@ export async function PUT(request: NextRequest, context: Context) {
     return post
       ? NextResponse.json(post)
       : NextResponse.json({ error: "Artikel niet gevonden." }, { status: 404 });
-  } catch {
+  } catch (error) {
+    if (isDuplicateKeyError(error))
+      return NextResponse.json(
+        {
+          error:
+            "Deze slug is net door een ander artikel gebruikt. Kies een andere slug.",
+        },
+        { status: 409 },
+      );
     return NextResponse.json({ error: "Opslaan is mislukt." }, { status: 500 });
   }
 }

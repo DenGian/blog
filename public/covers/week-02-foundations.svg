@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="t d">
+  <title id="t">Week 2 — fundamenten</title><desc id="d">Abstracte technische illustratie voor week 2.</desc>
+  <rect width="1200" height="630" fill="#17332b"/><path d="M0 500 1200 210v420H0z" fill="#21463a"/>
+  <text x="72" y="105" fill="#f2eee4" font-family="ui-monospace,monospace" font-size="28" letter-spacing="6">STAGEJOURNAAL</text>
+  <text x="72" y="530" fill="#f2eee4" font-family="ui-sans-serif,sans-serif" font-size="54" font-weight="700">FUNDAMENTEN</text>
+  <text x="1128" y="548" fill="#efb08d" font-family="ui-monospace,monospace" font-size="124" font-weight="700" text-anchor="end">02</text>
+  <path d="M150 450h900M220 450V280h210v170M500 450V210h210v240M780 450V330h210v120" fill="none" stroke="#efb08d" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="1060" cy="90" r="22" fill="#9bc2ad"/><circle cx="1000" cy="90" r="8" fill="#efb08d"/>
+</svg>

@@ -1,15 +1,20 @@
 import { z } from "zod";
 import { createSlug } from "./slug";
 import { sanitizePostHtml } from "./sanitize";
-const coverImageSchema = z
+export const coverImageSchema = z
   .string()
   .trim()
   .max(2_048)
-  .refine(
-    (value) =>
-      value === "" || value.startsWith("/") || /^https:\/\//i.test(value),
-    "Gebruik een lokale URL of een HTTPS-URL.",
-  );
+  .refine((value) => {
+    if (value === "") return true;
+    if (/^\/(?!\/)[^\s]*$/.test(value)) return true;
+    try {
+      const url = new URL(value);
+      return url.protocol === "https:" && !url.username && !url.password;
+    } catch {
+      return false;
+    }
+  }, "Gebruik een lokale URL of een HTTPS-URL.");
 const tagSchema = z
   .string()
   .trim()

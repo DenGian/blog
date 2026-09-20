@@ -8,7 +8,7 @@ export interface AdminSession {
   issuedAt: number;
 }
 const eightHours = 60 * 60 * 8;
-function options(): SessionOptions {
+export function getSessionOptions(): SessionOptions {
   return {
     cookieName: "journal_admin",
     password: process.env.SESSION_SECRET!,
@@ -24,7 +24,7 @@ function options(): SessionOptions {
 }
 export async function getAdminSession() {
   if (!isAuthConfigured()) return null;
-  return getIronSession<AdminSession>(await cookies(), options());
+  return getIronSession<AdminSession>(await cookies(), getSessionOptions());
 }
 export async function isAdmin(): Promise<boolean> {
   const session = await getAdminSession();

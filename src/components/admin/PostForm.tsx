@@ -53,6 +53,24 @@ export function PostForm({
     window.addEventListener("beforeunload", handler);
     return () => window.removeEventListener("beforeunload", handler);
   }, [dirty]);
+  useEffect(() => {
+    const protectNavigation = (event: MouseEvent) => {
+      if (!dirty || event.defaultPrevented || event.button !== 0) return;
+      const link = (event.target as Element).closest(
+        "a[href]",
+      ) as HTMLAnchorElement | null;
+      if (!link || link.target === "_blank" || link.origin !== location.origin)
+        return;
+      if (
+        !window.confirm(
+          "Je hebt niet-opgeslagen wijzigingen. Deze pagina verlaten?",
+        )
+      )
+        event.preventDefault();
+    };
+    document.addEventListener("click", protectNavigation, true);
+    return () => document.removeEventListener("click", protectNavigation, true);
+  }, [dirty]);
   function update<K extends keyof Values>(key: K, value: Values[K]) {
     setValues((current) => ({ ...current, [key]: value }));
     setDirty(true);
