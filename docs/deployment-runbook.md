@@ -16,13 +16,13 @@ Before relaunch, rotate the old admin credential, MongoDB application credential
 
 ## 3. Review and migrate manually
 
-1. Run `npm run content:export`; verify the count and JSON checksum.
-2. Store the ignored backup securely and test restoration to an isolated database.
-3. Run `npm run content:migrate` and review every proposed change. The current dry-run proposes publication state/schema updates for 15 legacy posts and sanitizer differences in 6 posts (including safe link and lazy-image attributes).
+1. Run `npm run content:export`; retain both the JSON and matching `.sha256` sidecar. The sidecar proves only that the local JSON has not changed since this command generated both files; it is not independent evidence of a safe external backup.
+2. Verify the reported count and identities, store the ignored pair securely, and test restoration to an isolated database.
+3. Run `npm run content:migrate` and review the `MIGRATION_DRY_RUN` report, including schema, sanitizer, publication, and local-cover changes. Do not rely on an old hard-coded change count.
 4. Schedule a maintenance window.
-5. Only after approval, run `npm run content:migrate -- --apply --backup <verified-file>`.
+5. Only after approval, run `npm run content:migrate:apply -- --backup <verified-file>`.
 6. Verify all 15 slugs, dates, tags, covers, and article bodies.
-7. Create indexes separately with `--apply-indexes` after checking for duplicate slugs.
+7. Review `npm run content:indexes`, then separately run `npm run content:indexes:apply -- --backup <verified-file>` after checking duplicate slugs. Reports must say `INDEX_DRY_RUN` and `INDEX_APPLY` respectively.
 
 If an apply fails, stop writes, retain logs that contain no credentials, restore the `posts` collection from the verified export into an isolated database first, verify it, and then follow the organization’s Atlas restore procedure. The script does not perform an automatic rollback.
 
@@ -62,7 +62,13 @@ If an apply fails, stop writes, retain logs that contain no credentials, restore
 8. Add the custom domain, verify DNS and HTTPS, update `SITE_URL`, and redeploy.
 9. Do not enable production CMS login until durable rate limiting is verified.
 
-## 8. Post-deployment smoke tests
+## 8. Verification status and commands
+
+Code-level readiness requires `npm run format:check`, `npm run lint`, `npm run typecheck`, `npm test`, `npm run test:e2e`, `npm run build`, and `npm audit`. The E2E command uses only a loopback temporary `journal_e2e_test` database and test credentials; it requires `mongod` and Playwright Chromium. CI installs those tools and executes the same isolated suite.
+
+Passing these checks is not evidence of deployment, penetration testing, an external audit, or production operation. Atlas connectivity, Vercel secrets/origin, Upstash durability, Cloudinary policy, Giscus repository settings, credential rotation, preview smoke tests, and production smoke tests remain manual external work.
+
+## 9. Post-deployment smoke tests
 
 - Homepage, article index, bounded search, tags, pagination, all 15 stable slugs, covers/fallbacks, previous/next links, print preview, sitemap, robots, and feed
 - Canonical/Open Graph origin contains no localhost value
@@ -71,13 +77,13 @@ If an apply fails, stop writes, retain logs that contain no credentials, restore
 - Missing Cloudinary and Giscus configuration does not crash public pages
 - Mobile navigation, keyboard focus, editor toolbar, form errors, and reduced-motion behavior
 
-## 9. Rollback
+## 10. Rollback
 
 1. Use Vercel’s previous known-good deployment for application rollback.
 2. Do not roll back code while leaving a partially applied schema change unexplained; the new reader supports both legacy and schema-version-2 documents, so investigate first.
 3. For data rollback, use the verified pre-migration export and the approved Atlas restoration process. Never run an improvised overwrite against production.
 4. Rotate any credential suspected of exposure and invalidate active sessions by rotating `SESSION_SECRET`.
 
-## 10. Related PDF repository
+## 11. Related PDF repository
 
 After this application is public and the real PDF is available here, archive the separate PDF-only repository with a concise redirect to the live journal. If it has no inbound links or independent value, making it private is preferable. Do not modify that repository before confirming links and ownership.

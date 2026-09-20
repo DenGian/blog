@@ -14,6 +14,7 @@ Only the current default branch is supported. This portfolio project has not rec
 - Use a least-privilege MongoDB user and a separate isolated database for tests.
 - Rotate the legacy admin credential, MongoDB application credential, old EmailJS values, and any stale deployment secrets before relaunch.
 - Configure durable rate limiting before enabling production admin login.
+- Treat Vercel's overwritten forwarding headers as the only configured client-IP trust boundary; self-hosted requests use a conservative shared bucket unless an equivalent trusted proxy boundary is implemented.
 - Review the dry-run and verified backup before executing a migration.
 - Apply dependency and framework security updates promptly, then rerun all quality gates.
 
