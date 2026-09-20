@@ -1,30 +1,19 @@
 #!/usr/bin/env node
-import { access, readFile } from "node:fs/promises";
 import process from "node:process";
 import { MongoClient } from "mongodb";
 import sanitizeHtml from "sanitize-html";
+import { parseMigrationArgs, readVerifiedBackup } from "./migration-core.mjs";
+import { legacyCovers } from "./legacy-covers.mjs";
 
-const apply = process.argv.includes("--apply");
-const createIndexes = process.argv.includes("--apply-indexes");
-const backupIndex = process.argv.indexOf("--backup");
-const backupPath = backupIndex >= 0 ? process.argv[backupIndex + 1] : undefined;
-if ((apply || createIndexes) && !backupPath) {
-  console.error(
-    "Refusing to write: pass --backup <verified-export.json> after running npm run content:export.",
-  );
+let options;
+try {
+  options = parseMigrationArgs(process.argv.slice(2));
+} catch (error) {
+  console.error(`Refusing to continue: ${error.message}`);
   process.exit(1);
 }
-if (backupPath) {
-  try {
-    await access(backupPath);
-    const backup = JSON.parse(await readFile(backupPath, "utf8"));
-    if (!Array.isArray(backup.posts) || backup.metadata?.mode !== "read-only")
-      throw new Error();
-  } catch {
-    console.error("Refusing to continue: backup is missing or invalid.");
-    process.exit(1);
-  }
-}
+const apply = options.mode === "MIGRATION_APPLY";
+const createIndexes = options.mode === "INDEX_APPLY";
 const uri = process.env.MONGODB_URI;
 if (!uri) {
   console.error("Migration failed: MONGODB_URI is not configured.");
@@ -32,7 +21,7 @@ if (!uri) {
 }
 const client = new MongoClient(uri, {
   appName: "internship-journal-migration",
-  readPreference: apply || createIndexes ? "primary" : "secondaryPreferred",
+  readPreference: apply || createIndexes ? "primary" : "primaryPreferred",
 });
 const clean = (html) =>
   sanitizeHtml(html, {
@@ -91,6 +80,12 @@ try {
     .db(process.env.MONGODB_DATABASE ?? "blog_portfolio")
     .collection("posts");
   const posts = await collection.find({}).sort({ date: 1, _id: 1 }).toArray();
+  if (options.backupPath)
+    await readVerifiedBackup(options.backupPath, {
+      database: process.env.MONGODB_DATABASE ?? "blog_portfolio",
+      collection: "posts",
+      targetPosts: posts,
+    });
   const operations = [];
   const report = [];
   for (const post of posts) {
@@ -110,19 +105,25 @@ try {
           : null,
       content,
       schemaVersion: 2,
+      ...(legacyCovers[post.slug]
+        ? { coverImage: legacyCovers[post.slug] }
+        : {}),
     };
     const changed =
       post.schemaVersion !== 2 ||
       post.status !== status ||
       post.content !== content ||
       (status === "published" && !post.publishedAt);
+    const coverChanged = Boolean(
+      legacyCovers[post.slug] && post.coverImage !== legacyCovers[post.slug],
+    );
     report.push({
       id: post._id.toString(),
       slug: post.slug,
-      changed,
+      changed: changed || coverChanged,
       contentSanitized: post.content !== content,
     });
-    if (changed)
+    if (changed || coverChanged)
       operations.push({
         updateOne: {
           filter: {
@@ -130,6 +131,9 @@ try {
             $or: [
               { schemaVersion: { $ne: 2 } },
               { status: { $exists: false } },
+              ...(legacyCovers[post.slug]
+                ? [{ coverImage: { $ne: legacyCovers[post.slug] } }]
+                : []),
             ],
           },
           update: { $set: changes },
@@ -139,7 +143,7 @@ try {
   console.log(
     JSON.stringify(
       {
-        mode: apply ? "APPLY" : "DRY_RUN",
+        mode: options.mode,
         posts: posts.length,
         proposedUpdates: operations.length,
         report,
@@ -148,10 +152,12 @@ try {
       2,
     ),
   );
-  if (apply && operations.length) {
+  if (options.mode === "MIGRATION_APPLY" && operations.length) {
     const result = await collection.bulkWrite(operations, { ordered: true });
     console.log(`Applied ${result.modifiedCount} idempotent post updates.`);
   }
+  if (options.mode === "INDEX_DRY_RUN")
+    console.log("Index definitions validated; no indexes were written.");
   if (createIndexes) {
     await collection.createIndex(
       { slug: 1 },

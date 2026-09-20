@@ -3,7 +3,9 @@ import { createSlug, slugWithSuffix } from "@/domain/posts/slug";
 import { calculateReadingTime } from "@/domain/posts/reading-time";
 import { escapeRegex, normalizeSearch } from "@/domain/posts/search";
 import { sanitizePostHtml } from "@/domain/posts/sanitize";
-import { postInputSchema } from "@/domain/posts/schema";
+import { coverImageSchema, postInputSchema } from "@/domain/posts/schema";
+import { legacyCoverBySlug } from "@/domain/posts/legacy-covers";
+import { legacyCovers as migrationLegacyCovers } from "../../scripts/legacy-covers.mjs";
 
 describe("post domain", () => {
   it("creates stable normalized slugs and bounded collision suffixes", () => {
@@ -45,5 +47,31 @@ describe("post domain", () => {
         author: { admin: true },
       }).success,
     ).toBe(false);
+  });
+  it("accepts safe local/HTTPS covers and rejects ambiguous or credentialed URLs", () => {
+    expect(coverImageSchema.safeParse("/covers/week.svg").success).toBe(true);
+    expect(
+      coverImageSchema.safeParse("https://res.cloudinary.com/example/image.png")
+        .success,
+    ).toBe(true);
+    expect(migrationLegacyCovers).toEqual(legacyCoverBySlug);
+    expect(
+      coverImageSchema.safeParse("//attacker.example/image.png").success,
+    ).toBe(false);
+    expect(
+      coverImageSchema.safeParse("https://user:pass@example.com/image.png")
+        .success,
+    ).toBe(false);
+    expect(
+      coverImageSchema.safeParse("http://example.com/image.png").success,
+    ).toBe(false);
+  });
+  it("maps all fifteen legacy slugs to deterministic local SVG covers", () => {
+    expect(Object.keys(legacyCoverBySlug)).toHaveLength(15);
+    expect(
+      Object.values(legacyCoverBySlug).every((value) =>
+        /^\/covers\/week-\d{2}-[a-z-]+\.svg$/.test(value),
+      ),
+    ).toBe(true);
   });
 });

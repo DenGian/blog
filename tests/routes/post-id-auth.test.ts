@@ -25,4 +25,38 @@ describe("identified post mutations", () => {
       expect(deletePost).not.toHaveBeenCalled();
     },
   );
+  it("updates and deletes through authorized handlers", async () => {
+    authorizeMutation.mockResolvedValue(null);
+    updatePost.mockResolvedValue({ id: "507f1f77bcf86cd799439011" });
+    deletePost.mockResolvedValue(true);
+    const handlers = await import("@/app/api/posts/[id]/route");
+    const input = {
+      title: "Valid post",
+      excerpt: "A sufficiently long excerpt",
+      content: "<p>Safe content</p>",
+      tags: [],
+      status: "draft",
+    };
+    expect(
+      (
+        await handlers.PUT(
+          new Request("http://localhost/api/posts/id", {
+            method: "PUT",
+            body: JSON.stringify(input),
+          }) as never,
+          { params: Promise.resolve({ id: "507f1f77bcf86cd799439011" }) },
+        )
+      ).status,
+    ).toBe(200);
+    expect(
+      (
+        await handlers.DELETE(
+          new Request("http://localhost/api/posts/id", {
+            method: "DELETE",
+          }) as never,
+          { params: Promise.resolve({ id: "507f1f77bcf86cd799439011" }) },
+        )
+      ).status,
+    ).toBe(204);
+  });
 });

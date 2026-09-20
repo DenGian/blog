@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, rename, writeFile } from "node:fs/promises";
+import { sha256 } from "./migration-core.mjs";
 import path from "node:path";
 import process from "node:process";
 import { MongoClient } from "mongodb";
@@ -14,7 +15,7 @@ if (!uri) {
 } else {
   const client = new MongoClient(uri, {
     appName: "internship-journal-read-only-export",
-    readPreference: "secondaryPreferred",
+    readPreference: "primary",
   });
 
   try {
@@ -26,6 +27,7 @@ if (!uri) {
       .find(
         {},
         {
+          readConcern: { level: "majority" },
           projection: {
             _id: 1,
             title: 1,
@@ -63,26 +65,44 @@ if (!uri) {
         database: databaseName,
         collection: "posts",
         count: posts.length,
-        mode: "read-only",
+        mode: "read-only-primary-majority",
+        identities: posts.map((post) => ({
+          id: post._id.toString(),
+          slug: post.slug,
+        })),
       },
       posts,
     };
 
     await mkdir(outputDirectory, { recursive: true, mode: 0o700 });
-    await writeFile(outputPath, `${JSON.stringify(payload, null, 2)}\n`, {
+    const content = `${JSON.stringify(payload, null, 2)}\n`;
+    const temporary = `${outputPath}.tmp`;
+    await writeFile(temporary, content, {
       encoding: "utf8",
       mode: 0o600,
       flag: "wx",
     });
 
-    const valid = JSON.parse(
-      await import("node:fs/promises").then(({ readFile }) =>
-        readFile(outputPath, "utf8"),
-      ),
-    );
-    if (!Array.isArray(valid.posts) || valid.posts.length !== posts.length) {
+    const valid = JSON.parse(await readFile(temporary, "utf8"));
+    if (
+      !Array.isArray(valid.posts) ||
+      valid.posts.length !== posts.length ||
+      new Set(valid.posts.map((post) => String(post._id))).size !==
+        posts.length ||
+      new Set(valid.posts.map((post) => post.slug)).size !== posts.length
+    ) {
       throw new Error("Backup verification failed");
     }
+    await rename(temporary, outputPath);
+    const checksum = `${sha256(content)}  ${path.basename(outputPath)}\n`;
+    const checksumPath = `${outputPath}.sha256`,
+      checksumTemporary = `${checksumPath}.tmp`;
+    await writeFile(checksumTemporary, checksum, {
+      encoding: "utf8",
+      mode: 0o600,
+      flag: "wx",
+    });
+    await rename(checksumTemporary, checksumPath);
 
     console.log(
       `Read-only export complete: ${posts.length} posts written to ${path.relative(process.cwd(), outputPath)}`,

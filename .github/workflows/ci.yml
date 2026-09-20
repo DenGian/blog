@@ -8,7 +8,7 @@ permissions:
 jobs:
   quality:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     env:
       MONGODB_URI: mongodb://127.0.0.1:27017/ci-placeholder
       MONGODB_DATABASE: journal_ci
@@ -20,9 +20,14 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - uses: supercharge/mongodb-github-action@1.12.0
+        with:
+          mongodb-version: 8.0
       - run: npm run format:check
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:e2e
       - run: npm run build
-      - run: npm audit --omit=dev --audit-level=high
+      - run: npm audit --audit-level=high
