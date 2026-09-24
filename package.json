@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "private": true,
-  "description": "A Dutch software-engineering internship journal with a secure single-admin CMS.",
+  "description": "A Dutch blog about a 2025 software engineering internship at HolonCom, with a secure single-admin CMS.",
   "engines": {
     "node": ">=22 <27"
   },

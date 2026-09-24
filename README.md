@@ -1,17 +1,17 @@
-# Software Engineering Internship Journal
+# Blog van Ian Mondelaers
 
 [![Quality](https://github.com/DenGian/blog/actions/workflows/ci.yml/badge.svg)](https://github.com/DenGian/blog/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) · [Live site](https://holoncom-blog.vercel.app/)
 
-A deployed Dutch internship journal and a protected single-admin CMS. Live at [holoncom-blog.vercel.app](https://holoncom-blog.vercel.app/). Fifteen original weekly articles document Ian Mondelaers’ workplace learning at HolonCom; the application around them is a production-minded Next.js portfolio project.
+A Dutch blog about Ian Mondelaers’ 15-week internship as a software engineer at HolonCom in 2025, with a protected single-admin CMS. Live at [holoncom-blog.vercel.app](https://holoncom-blog.vercel.app/). The 15 original weekly posts remain historical writing; the application around them is a Next.js portfolio project.
 
-The articles are intentionally kept in Dutch and are not rewritten by the platform.
+The original blogposts remain in Dutch and are not rewritten by the platform.
 
-![Current journal homepage introduction](docs/assets/homepage.png)
+![Blog homepage introduction](docs/assets/homepage.png)
 
 ## What is implemented
 
 - App Router with server components by default and bounded dynamic MongoDB reads
-- Dutch article index, safe search, tag filters, pagination, reading time, adjacent navigation, print styles, and resilient cover images
+- Dutch blogpost index, safe search, tag filters, pagination, reading time, adjacent navigation, print styles, and resilient cover images
 - Encrypted server-side admin session, bcrypt password verification, origin checks, and authorization on every mutation
 - Draft, preview, publish, unpublish, edit, collision-safe slug, and explicit delete workflows
 - Shared Zod validation and restrictive server-side rich HTML sanitization
@@ -105,7 +105,7 @@ Reports use the unambiguous modes `MIGRATION_DRY_RUN`, `MIGRATION_APPLY`, `INDEX
 
 ## Cover media and licensing
 
-The fifteen legacy slugs render project-original, code-native SVG illustrations from `public/covers/`; they were created specifically for this journal and contain no copied photos, logos, fonts, raster data, or external resources. A typed slug map overrides the old database URLs immediately. The optional migration later stores those local paths without downloading or redistributing the former remote images.
+The fifteen legacy slugs render project-original, code-native SVG illustrations from `public/covers/`; they were created specifically for this blog and contain no copied photos, logos, fonts, raster data, or external resources. A typed slug map overrides the old database URLs immediately. The optional migration later stores those local paths without downloading or redistributing the former remote images.
 
 Only upload or reference media you own or are licensed to publish. Prefer local project assets or configured Cloudinary delivery. An arbitrary HTTPS field remains available for appropriately licensed media, but it is not permission to hotlink third-party sites.
 
@@ -131,7 +131,7 @@ The complete internship PDF was not present during the overhaul. Add the real do
 
 ## Deployment
 
-The site is deployed on Vercel. On 24 September 2026, the production site served all 15 original article URLs, all 15 local covers, the sitemap, and the feed. See the [deployment runbook](docs/deployment-runbook.md) and [public-release checklist](docs/public-release.md) for configuration and release checks. Do not run the migration to repair a missing or failing production connection.
+The site is deployed on Vercel. On 24 September 2026, the production site served all 15 original blogpost URLs, all 15 local covers, the sitemap, and the feed. See the [deployment runbook](docs/deployment-runbook.md) and [public-release checklist](docs/public-release.md) for configuration and release checks. Do not run the migration to repair a missing or failing production connection.
 
 ## Limitations and next steps
 
@@ -143,4 +143,4 @@ The site is deployed on Vercel. On 24 September 2026, the production site served
 
 ## License and portfolio context
 
-The application source code is available under the MIT License. Written internship articles, personal photographs, and other original personal media remain © Ian Mondelaers and are not licensed under MIT. See [`LICENSE`](LICENSE) for the standard MIT code license and [`CONTENT_LICENSE.md`](CONTENT_LICENSE.md) for the content boundary.
+The application source code is available under the MIT License. Written internship blogposts, personal photographs, and other original personal media remain © Ian Mondelaers and are not licensed under MIT. See [`LICENSE`](LICENSE) for the standard MIT code license and [`CONTENT_LICENSE.md`](CONTENT_LICENSE.md) for the content boundary.

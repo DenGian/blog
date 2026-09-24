@@ -1,6 +1,6 @@
 # Deployment and migration runbook
 
-The application is deployed at https://holoncom-blog.vercel.app/. On 24 September 2026, all 15 public article URLs, local covers, sitemap entries, and feed entries were reachable. A read-only local export also confirmed the original posts in `blog_portfolio.posts`. Review Vercel runtime logs and environment scopes if retrieval fails later; do not change data to diagnose connectivity.
+The application is deployed at https://holoncom-blog.vercel.app/. On 24 September 2026, all 15 public blogpost URLs, local covers, sitemap entries, and feed entries were reachable. A read-only local export also confirmed the original posts in `blog_portfolio.posts`. Review Vercel runtime logs and environment scopes if retrieval fails later; do not change data to diagnose connectivity.
 
 ## 1. Rotate credentials
 
@@ -8,7 +8,7 @@ Before relaunch, rotate the old admin credential, MongoDB application credential
 
 ## 2. MongoDB Atlas
 
-1. Create a dedicated application user with read/write access only to the journal database; do not use an Atlas owner or broad cluster-admin credential.
+1. Create a dedicated application user with read/write access only to the blog database; do not use an Atlas owner or broad cluster-admin credential.
 2. Use a separate database/user for preview and automated tests.
 3. Restrict network access according to the Vercel/Atlas integration guidance. Avoid `0.0.0.0/0` where an integration or controlled egress option is available.
 4. Set `MONGODB_URI` and `MONGODB_DATABASE` only in Vercel’s encrypted server environment. Preview and Production variables are separate: a Production-only `MONGODB_URI` is unavailable to pull-request Preview deployments, so configure isolated Preview credentials if Preview database-backed pages or CMS testing must work.
@@ -114,4 +114,4 @@ Passing these checks is not evidence of deployment, penetration testing, an exte
 
 ## 11. Related PDF repository
 
-After this application is public and the real PDF is available here, archive the separate PDF-only repository with a concise redirect to the live journal. If it has no inbound links or independent value, making it private is preferable. Do not modify that repository before confirming links and ownership.
+After this application is public and the real PDF is available here, archive the separate PDF-only repository with a concise redirect to the live blog. If it has no inbound links or independent value, making it private is preferable. Do not modify that repository before confirming links and ownership.
