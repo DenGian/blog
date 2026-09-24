@@ -91,6 +91,7 @@ async function seedFixtures() {
         excerpt: "Deterministic legacy fixture for compatibility testing.",
         content: "<p>Legacy fixture content.</p>",
         tags: ["Refactoring"],
+        author: { name: "Ian Mondelaers", image: "/profile.png" },
         date: new Date("2025-01-01T10:00:00Z"),
         createdAt: new Date("2025-01-01T10:00:00Z"),
         updatedAt: new Date("2025-01-01T10:00:00Z"),

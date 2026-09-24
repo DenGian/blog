@@ -75,6 +75,8 @@ test("journal pages keep their layout and links across screen sizes", async ({
       "/contact",
       "/blog/docker-fundamentals",
       "/admin/login",
+      "/unknown-page",
+      "/admin/unknown-page",
     ]) {
       await page.goto(path);
       await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
@@ -84,6 +86,9 @@ test("journal pages keep their layout and links across screen sizes", async ({
         ),
         `${path} overflows at ${width}px`,
       ).toBe(false);
+      if (path.startsWith("/admin/")) {
+        await expect(page.locator(".site-header, .site-footer")).toHaveCount(0);
+      }
     }
   }
   await page.goto("/contact");
@@ -108,6 +113,7 @@ test("removed personal photos are unavailable and unreferenced", async ({
     "/about",
     "/contact",
     "/blog/docker-fundamentals",
+    "/blog/legacy-refactoring",
   ]) {
     await page.goto(path);
     const html = await page.locator("body").innerHTML();
