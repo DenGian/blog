@@ -94,7 +94,8 @@ try {
     const valid =
       typeof post.title === "string" &&
       typeof post.slug === "string" &&
-      content.replace(/<[^>]+>/g, "").trim().length > 0 &&
+      sanitizeHtml(content, { allowedTags: [], allowedAttributes: {} }).trim()
+        .length > 0 &&
       Array.isArray(post.tags);
     if (!valid) throw new Error("validation");
     const changes = {

@@ -48,3 +48,10 @@ const options: sanitizeHtml.IOptions = {
 export function sanitizePostHtml(html: string): string {
   return sanitizeHtml(html, options).trim();
 }
+
+export function hasVisiblePostText(html: string): boolean {
+  return (
+    sanitizeHtml(html, { allowedTags: [], allowedAttributes: {} }).trim()
+      .length > 0
+  );
+}
