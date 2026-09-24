@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     );
   const timestamp = Math.floor(Date.now() / 1_000);
   const folder = "internship-journal/covers";
-  const signature = createHash("sha1")
+  const signature = createHash("sha256")
     .update(
       `folder=${folder}&timestamp=${timestamp}${process.env.CLOUDINARY_API_SECRET}`,
     )
