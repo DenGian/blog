@@ -7,9 +7,9 @@ import type { PostPageResult } from "@/domain/posts/types";
 import { logOperationalError } from "@/lib/operational-log";
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Artikelen",
+  title: "Blogposts",
   description:
-    "Vijftien weekverslagen over het werk en de technische uitdagingen tijdens Ians stage bij HolonCom in 2025.",
+    "Vijftien blogposts over Ians werk en technische uitdagingen als software engineer bij HolonCom in 2025.",
 };
 export default async function BlogPage({
   searchParams,
@@ -48,7 +48,7 @@ export default async function BlogPage({
     <section className="section shell">
       <header className="page-header">
         <p className="kicker">Vijftien weken bij HolonCom</p>
-        <h1>Het journaal</h1>
+        <h1>De blog</h1>
         <p>
           Vijftien weekverslagen over de projecten, technische uitdagingen en
           lessen uit mijn stage bij HolonCom.
@@ -110,15 +110,15 @@ export default async function BlogPage({
       )}
       {unavailable ? (
         <div className="empty-state" role="status">
-          <h2>Het journaal is tijdelijk niet beschikbaar.</h2>
+          <h2>De blog is tijdelijk niet beschikbaar.</h2>
           <p>
-            De artikelen konden niet worden geladen. Probeer het later opnieuw.
+            De blogposts konden niet worden geladen. Probeer het later opnieuw.
           </p>
         </div>
       ) : result.posts.length ? (
         <>
           <p className="result-count">
-            {result.total} {result.total === 1 ? "artikel" : "artikelen"}
+            {result.total} {result.total === 1 ? "blogpost" : "blogposts"}
           </p>
           <div className="post-list">
             {result.posts.map((post) => (
@@ -145,8 +145,8 @@ export default async function BlogPage({
         <div className="empty-state">
           <h2>
             {query.search || query.tag
-              ? "Geen artikelen gevonden"
-              : "Er zijn nog geen artikelen gepubliceerd"}
+              ? "Geen blogposts gevonden"
+              : "Er zijn nog geen blogposts gepubliceerd"}
           </h2>
           <p>
             {query.search || query.tag

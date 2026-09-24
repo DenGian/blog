@@ -14,7 +14,7 @@ export default function ContactPage() {
         <p className="kicker">Contact</p>
         <h1>Neem gerust contact op.</h1>
         <p>
-          Wil je iets vragen over mijn stage, een artikel of mijn werk als
+          Wil je iets vragen over mijn stage, een blogpost of mijn werk als
           software engineer? Je vindt me op LinkedIn en GitHub.
         </p>
       </header>

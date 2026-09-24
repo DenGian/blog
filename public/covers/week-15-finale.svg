@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="t d">
   <title id="t">Week 15 — afronding</title><desc id="d">Abstracte technische illustratie voor week 15.</desc>
   <rect width="1200" height="630" fill="#17332b"/><path d="M0 500 1200 210v420H0z" fill="#21463a"/>
-  <text x="72" y="105" fill="#f2eee4" font-family="ui-monospace,monospace" font-size="28" letter-spacing="6">STAGEJOURNAAL</text>
+  <text x="72" y="105" fill="#f2eee4" font-family="ui-monospace,monospace" font-size="28" letter-spacing="6">BLOG</text>
   <text x="72" y="530" fill="#f2eee4" font-family="ui-sans-serif,sans-serif" font-size="54" font-weight="700">AFRONDING</text>
   <text x="1128" y="548" fill="#efb08d" font-family="ui-monospace,monospace" font-size="124" font-weight="700" text-anchor="end">15</text>
   <path d="M180 390h620M800 390l-90-90M800 390l-90 90M890 220h130v170H890" fill="none" stroke="#efb08d" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>

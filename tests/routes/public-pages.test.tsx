@@ -31,7 +31,7 @@ describe("public database states", () => {
     const { default: HomePage } = await import("@/app/(public)/page");
     listPublishedPosts.mockResolvedValue({ posts: [] });
     expect(renderToStaticMarkup(await HomePage())).toContain(
-      "nog geen artikelen gepubliceerd",
+      "nog geen blogposts gepubliceerd",
     );
     listPublishedPosts.mockRejectedValue(
       new Error("Database connection failed."),
@@ -51,7 +51,7 @@ describe("public database states", () => {
     });
     const props = { searchParams: Promise.resolve({ search: "unmatched" }) };
     expect(renderToStaticMarkup(await BlogPage(props))).toContain(
-      "Geen artikelen gevonden",
+      "Geen blogposts gevonden",
     );
     listPublishedPosts.mockRejectedValue(
       new Error("Database connection failed."),

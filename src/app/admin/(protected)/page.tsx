@@ -19,12 +19,12 @@ export default async function AdminDashboard() {
           <h1>
             {unavailable
               ? "Database tijdelijk niet bereikbaar"
-              : "Artikelen konden niet worden geladen"}
+              : "Blogposts konden niet worden geladen"}
           </h1>
           <p>
             {unavailable
               ? "De inhoudsservice reageert momenteel niet."
-              : "Er trad een onverwachte fout op bij het ophalen van de artikelen."}{" "}
+              : "Er trad een onverwachte fout op bij het ophalen van de blogposts."}{" "}
             Probeer het later opnieuw.
           </p>
         </div>
@@ -39,12 +39,12 @@ export default async function AdminDashboard() {
           <p className="kicker">Contentoverzicht</p>
           <h1>Dashboard</h1>
           <p>
-            {posts.length} artikelen · {drafts} concepten ·{" "}
+            {posts.length} blogposts · {drafts} concepten ·{" "}
             {posts.length - drafts} gepubliceerd
           </p>
         </div>
         <Link className="button primary" href="/admin/posts/new">
-          Nieuw artikel
+          Nieuwe blogpost
         </Link>
       </div>
       {posts.length ? (
@@ -52,7 +52,7 @@ export default async function AdminDashboard() {
           <table className="admin-table">
             <thead>
               <tr>
-                <th>Artikel</th>
+                <th>Blogpost</th>
                 <th>Status</th>
                 <th>Bijgewerkt</th>
                 <th>
@@ -103,7 +103,7 @@ export default async function AdminDashboard() {
         </div>
       ) : (
         <div className="empty-state">
-          <h2>Nog geen artikelen</h2>
+          <h2>Nog geen blogposts</h2>
           <p>Maak eerst een concept aan.</p>
         </div>
       )}

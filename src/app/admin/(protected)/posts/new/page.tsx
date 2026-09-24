@@ -8,8 +8,8 @@ export default async function NewPostPage() {
       <div className="admin-heading">
         <div>
           <p className="kicker">CMS</p>
-          <h1>Nieuw artikel</h1>
-          <p>Nieuwe artikelen starten veilig als concept.</p>
+          <h1>Nieuwe blogpost</h1>
+          <p>Nieuwe blogposts worden eerst als concept opgeslagen.</p>
         </div>
       </div>
       <PostForm mediaConfigured={isMediaConfigured()} />

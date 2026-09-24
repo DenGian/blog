@@ -29,7 +29,7 @@ export function RichTextEditor({
       attributes: {
         class: "editor-content",
         role: "textbox",
-        "aria-label": "Artikelinhoud",
+        "aria-label": "Blogpostinhoud",
         "aria-multiline": "true",
       },
     },

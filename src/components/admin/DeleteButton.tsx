@@ -58,7 +58,7 @@ export function DeleteButton({ id, title }: { id: string; title: string }) {
             aria-labelledby={`delete-${id}`}
             className="confirm-dialog"
           >
-            <h2 id={`delete-${id}`}>Artikel verwijderen?</h2>
+            <h2 id={`delete-${id}`}>Blogpost verwijderen?</h2>
             <p>“{title}” wordt definitief verwijderd.</p>
             {error && (
               <p role="alert" className="form-error">

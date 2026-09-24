@@ -83,7 +83,7 @@ export default async function ArticlePage({ params }: Props) {
       />
       <header className="article-header shell narrow">
         <Link className="back-link" href="/blog">
-          ← Alle artikelen
+          ← Alle blogposts
         </Link>
         <ul className="tag-list">
           {post.tags.map((tag) => (
@@ -110,7 +110,7 @@ export default async function ArticlePage({ params }: Props) {
       />
       <nav
         className="article-nav shell narrow"
-        aria-label="Vorige en volgende artikel"
+        aria-label="Vorige en volgende blogpost"
       >
         <div>
           {adjacent.previous && (

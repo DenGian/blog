@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Over de stage",
   description:
-    "Over Ians vijftien weken als software-engineeringstagiair bij HolonCom in 2025 en de artikelen die hij erover schreef.",
+    "Over Ians stage als software engineer bij HolonCom in 2025 en de blogposts over zijn vijftien weken daar.",
 };
 
 export default function AboutPage() {
@@ -14,9 +14,9 @@ export default function AboutPage() {
         <p className="kicker">Over de stage</p>
         <h1>Vijftien weken software engineering bij HolonCom</h1>
         <p>
-          Ik ben Ian Mondelaers. In 2025 liep ik vijftien weken stage als
-          software engineer bij HolonCom. In dit journaal schreef ik elke week
-          op waar ik aan werkte en wat ik onderweg leerde.
+          Ik ben Ian Mondelaers. Tijdens mijn stage als software engineer bij
+          HolonCom in 2025 schreef ik vijftien weken lang over wat ik bouwde en
+          leerde.
         </p>
         <p>
           Die verslagen volgen mijn stage van de eerste opdrachten tot de
@@ -36,7 +36,7 @@ export default function AboutPage() {
         </div>
         <div>
           <dt>Rol</dt>
-          <dd>Software-engineeringstagiair</dd>
+          <dd>Software engineer</dd>
         </div>
         <div>
           <dt>Organisatie</dt>
@@ -55,18 +55,18 @@ export default function AboutPage() {
           </p>
         </section>
         <section>
-          <h2>Dit journaal</h2>
+          <h2>Deze blog</h2>
           <p>
-            Ik schreef de artikelen tijdens mijn stage, week na week. Nu geven
-            ze een eerlijk beeld van mijn technische werk en van wat ik in die
-            vijftien weken heb bijgeleerd.
+            Ik schreef de blogposts tijdens mijn stage, week na week. Samen
+            geven ze een eerlijk beeld van mijn technische werk en van wat ik in
+            die vijftien weken heb geleerd.
           </p>
         </section>
       </div>
 
       <div className="actions about-actions">
         <Link className="button primary" href="/blog">
-          Bekijk de artikelen
+          Bekijk de blogposts
         </Link>
         <Link className="button secondary" href="/contact">
           Neem contact op
