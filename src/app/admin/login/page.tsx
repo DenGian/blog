@@ -21,13 +21,12 @@ export default async function LoginPage() {
   return (
     <section className="admin-page login-page">
       <div className="admin-card">
-        <p className="kicker">Beveiligd beheer</p>
+        <p className="kicker">Beheer</p>
         <h1>Aanmelden</h1>
-        <p>Alle beheermutaties worden opnieuw op de server geautoriseerd.</p>
+        <p>Meld je aan om de artikelen te beheren.</p>
         {configurationError && (
           <p className="notice warning" role="alert">
-            De serverconfiguratie voor beheer is ongeldig. Controleer de
-            gekoppelde variabelen zonder geheime waarden in de browser te delen.
+            Aanmelden is niet beschikbaar. Controleer de beheerinstellingen.
           </p>
         )}
         <LoginForm configured={configured} />

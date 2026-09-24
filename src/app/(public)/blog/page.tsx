@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Artikelen",
   description:
-    "Vijftien weekverslagen over software engineering, samenwerking en professionele groei.",
+    "Vijftien weekverslagen over het werk en de technische uitdagingen tijdens Ians stage bij HolonCom in 2025.",
 };
 export default async function BlogPage({
   searchParams,
@@ -50,8 +50,8 @@ export default async function BlogPage({
         <p className="kicker">Vijftien weken bij HolonCom</p>
         <h1>Het journaal</h1>
         <p>
-          Van de eerste week tot het afscheid: werk, vragen en inzichten in de
-          volgorde waarin ze ontstonden.
+          Vijftien weekverslagen over de projecten, technische uitdagingen en
+          lessen uit mijn stage bij HolonCom.
         </p>
       </header>
       <form className="search" action="/blog" role="search">

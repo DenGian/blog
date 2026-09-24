@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { PostCard } from "@/components/posts/PostCard";
 import { listPublishedPosts } from "@/data/posts";
 import type { PostView } from "@/domain/posts/types";
@@ -35,20 +34,11 @@ export default async function HomePage() {
               </Link>
             </div>
           </div>
-          <aside className="hero-author">
-            <Image
-              src="/profile-image.jpg"
-              alt="Ian Mondelaers"
-              width={541}
-              height={1040}
-              sizes="(max-width: 760px) 92px, 148px"
-              priority
-            />
-            <div>
-              <strong>Ian Mondelaers</strong>
-              <span>Software engineering · HolonCom</span>
-            </div>
-          </aside>
+          <p className="hero-byline">
+            Ian Mondelaers <span aria-hidden="true">·</span>{" "}
+            Software-engineeringstage bij HolonCom{" "}
+            <span aria-hidden="true">·</span> 2025
+          </p>
         </div>
       </section>
       <section className="section shell">

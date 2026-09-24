@@ -1,39 +1,45 @@
 import type { Metadata } from "next";
+import { githubUrl, linkedinUrl } from "@/lib/social-links";
+
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Geverifieerde profielkanalen van Ian Mondelaers.",
+  description:
+    "Neem contact op met Ian Mondelaers via LinkedIn of bekijk zijn projecten op GitHub.",
 };
+
 export default function ContactPage() {
-  const github =
-    process.env.NEXT_PUBLIC_GITHUB_URL || "https://github.com/DenGian";
-  const linkedin =
-    process.env.NEXT_PUBLIC_LINKEDIN_URL ||
-    "https://www.linkedin.com/in/ian-mondelaers/";
   return (
-    <section className="section shell narrow">
+    <section className="section shell narrow contact-page">
       <header className="page-header">
         <p className="kicker">Contact</p>
-        <h1>Laten we verder praten.</h1>
+        <h1>Neem gerust contact op.</h1>
         <p>
-          Voor vragen over het stagejournaal of mijn software-engineeringwerk
-          kun je me bereiken via de bestaande, verifieerbare profielkanalen.
+          Wil je iets vragen over mijn stage, een artikel of mijn werk als
+          software engineer? Je vindt me op LinkedIn en GitHub.
         </p>
       </header>
       <div className="contact-cards">
-        <a href={linkedin} target="_blank" rel="noopener noreferrer">
-          <span>Professioneel profiel</span>
-          <strong>LinkedIn ↗</strong>
+        <a
+          href={linkedinUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Bekijk mijn LinkedIn-profiel (opent in een nieuw tabblad)"
+        >
+          <strong>LinkedIn</strong>
+          <span>Stuur me een bericht of maak verbinding.</span>
+          <span className="contact-action">Bekijk mijn profiel ↗</span>
         </a>
-        <a href={github} target="_blank" rel="noopener noreferrer">
-          <span>Code en projecten</span>
-          <strong>GitHub ↗</strong>
+        <a
+          href={githubUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Bekijk mijn GitHub-projecten (opent in een nieuw tabblad)"
+        >
+          <strong>GitHub</strong>
+          <span>Bekijk mijn projecten en openbare code.</span>
+          <span className="contact-action">Ga naar GitHub ↗</span>
         </a>
       </div>
-      <p className="privacy-note">
-        Deze site gebruikt geen contactformulier en verzamelt daardoor geen
-        contactgegevens. Dit voorkomt een onbeheerde mailintegratie en
-        spamrisico.
-      </p>
     </section>
   );
 }
