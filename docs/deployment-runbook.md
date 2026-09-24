@@ -1,6 +1,6 @@
 # Deployment and migration runbook
 
-The application is deployed at https://holoncom-blog.vercel.app/. Public article retrieval is currently failing; the original 15 posts are confirmed in `blog_portfolio.posts` via a read-only local export. Review Vercel runtime logs and environment scopes before changing data.
+The application is deployed at https://holoncom-blog.vercel.app/. On 24 September 2026, all 15 public article URLs, local covers, sitemap entries, and feed entries were reachable. A read-only local export also confirmed the original posts in `blog_portfolio.posts`. Review Vercel runtime logs and environment scopes if retrieval fails later; do not change data to diagnose connectivity.
 
 ## 1. Rotate credentials
 
@@ -84,7 +84,7 @@ If an apply fails, stop writes, retain logs that contain no credentials, restore
 | `NEXT_PUBLIC_GITHUB_URL`         | Preview and Production | Optional                                                                    | Enter the verified public HTTPS profile URL.                                                                                                                            |
 | `NEXT_PUBLIC_LINKEDIN_URL`       | Preview and Production | Optional                                                                    | Enter the verified public HTTPS profile URL.                                                                                                                            |
 
-Editing Vercel environment variables does not update an existing deployment; redeploy Production after corrections. For the current outage, inspect the Production deployment runtime log for a `MONGODB_URI` configuration failure or database connection failure. Confirm the variable is scoped to Production, `MONGODB_DATABASE` is `blog_portfolio`, and the Atlas application user can read `posts`. If connection fails, check Atlas network access and credential validity without logging the URI. Do not run an apply migration as a connectivity fix.
+Editing Vercel environment variables does not update an existing deployment; redeploy Production after corrections. If article retrieval fails, inspect the Production deployment runtime log for a `MONGODB_URI` configuration failure or database connection failure. Confirm the variable is scoped to Production, `MONGODB_DATABASE` is `blog_portfolio`, and the Atlas application user can read `posts`. If connection fails, check Atlas network access and credential validity without logging the URI. Do not run an apply migration as a connectivity fix.
 
 Preview must use a separate database or a read-only production-data user. It must have no production CMS mutation access and must use a distinct `SESSION_SECRET`.
 
