@@ -41,8 +41,7 @@ export function LoginForm({ configured }: { configured: boolean }) {
       </div>
       {!configured && (
         <p className="notice warning" role="status">
-          Aanmelden is momenteel niet beschikbaar. Neem contact op met de
-          beheerder als je toegang nodig hebt.
+          Aanmelden is niet beschikbaar. Controleer de beheerinstellingen.
         </p>
       )}
       {error && (
@@ -55,7 +54,7 @@ export function LoginForm({ configured }: { configured: boolean }) {
         type="submit"
         disabled={!configured || busy}
       >
-        {busy ? "Aanmelden…" : "Veilig aanmelden"}
+        {busy ? "Aanmelden…" : "Aanmelden"}
       </button>
     </form>
   );

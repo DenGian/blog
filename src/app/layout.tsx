@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     template: "%s | Stagejournaal",
   },
   description:
-    "Een openbaar journaal over vijftien weken werkplekleren en professionele groei in software engineering.",
+    "Ian Mondelaers blikt terug op vijftien weken software engineering bij HolonCom in 2025.",
   applicationName: "Stagejournaal",
   icons: { icon: "/favicon.ico" },
   openGraph: {
