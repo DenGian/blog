@@ -6,7 +6,7 @@ A deployed Dutch internship journal and a protected single-admin CMS. Live at [h
 
 The articles are intentionally kept in Dutch and are not rewritten by the platform.
 
-![Current journal homepage with original weekly article covers](docs/assets/homepage.png)
+![Current journal homepage introduction](docs/assets/homepage.png)
 
 ## What is implemented
 
@@ -125,19 +125,19 @@ By default, `npm run test:e2e` starts a loopback-only temporary `mongod` on a te
 
 ## Optional integrations
 
-Cloudinary and Giscus are disabled gracefully when not configured. Giscus needs a public repository, GitHub Discussions, the Giscus app, and the four public identifiers; this repository is currently private, so comments should remain disabled until that later manual setup. EmailJS was removed: a static contact page with verified GitHub and LinkedIn links is more credible than an unmonitored browser-side mail form.
+Cloudinary and Giscus are disabled gracefully when not configured. Giscus needs GitHub Discussions, the Giscus app, and the four public identifiers; Discussions are disabled, so comments remain unavailable until a separate setup decision. EmailJS was removed: a static contact page with verified GitHub and LinkedIn links is more credible than an unmonitored browser-side mail form.
 
 The complete internship PDF was not present during the overhaul. Add the real document at `public/internship-journal.pdf` and then expose the download link; no fabricated placeholder is shipped.
 
 ## Deployment
 
-The site is deployed on Vercel, but its public article queries currently fail while the 15 original posts remain readable from the local MongoDB configuration. Production Vercel and Atlas settings must be checked manually; see the [deployment runbook](docs/deployment-runbook.md) and [public-release checklist](docs/public-release.md). Do not run the migration to repair a missing or failing production connection.
+The site is deployed on Vercel. On 24 September 2026, the production site served all 15 original article URLs, all 15 local covers, the sitemap, and the feed. See the [deployment runbook](docs/deployment-runbook.md) and [public-release checklist](docs/public-release.md) for configuration and release checks. Do not run the migration to repair a missing or failing production connection.
 
 ## Limitations and next steps
 
 - Durable rate limiting, media uploads, and comments require external configuration.
 - The migration and index apply modes have not been run against the existing database.
-- The live deployment currently lacks working article retrieval. Production configuration and runtime logs require owner verification before public release.
+- Production admin login and secret rotation require owner verification before they are described as operational.
 - Optional Cloudinary uploads and Giscus comments are not confirmed configured; production admin login is currently unavailable.
 - No analytics or contact-data collection is included.
 
