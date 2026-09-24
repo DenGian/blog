@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import { Header } from "@/components/site/Header";
-import { Footer } from "@/components/site/Footer";
 import { getSiteUrl } from "@/lib/env";
 import "./globals.css";
 export const metadata: Metadata = {
@@ -25,11 +23,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="nl">
-      <body>
-        <Header />
-        <main id="main">{children}</main>
-        <Footer />
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
