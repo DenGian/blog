@@ -10,11 +10,11 @@ export default function AboutPage() {
   return (
     <section className="section shell">
       <header className="page-header">
-        <p className="kicker">Over het traject</p>
-        <h1>Werkplekleren als software engineer</h1>
+        <p className="kicker">Over mij en dit journaal</p>
+        <h1>Ik ben Ian.</h1>
         <p>
-          Een stageperiode waarin technische uitvoering, communicatie en
-          professionele zelfstandigheid samen groeiden.
+          Ik liep vijftien weken stage als software engineer bij HolonCom. Dit
+          journaal is mijn verslag van die periode.
         </p>
       </header>
       <div className="about-grid">
@@ -29,25 +29,17 @@ export default function AboutPage() {
           />
         </div>
         <div className="prose-static">
-          <h2>Waarom dit journaal bestaat</h2>
+          <h2>Week na week</h2>
           <p>
-            De vijftien artikelen leggen week voor week vast welke problemen ik
-            tegenkwam, hoe ik ze benaderde en wat ik daaruit leerde tijdens mijn
-            stage bij HolonCom. De teksten blijven bewust in hun oorspronkelijke
-            Nederlandse vorm.
+            Ik schreef op wat ik bouwde, waar ik vastliep en hoe ik verderkwam.
+            Samen laten de vijftien oorspronkelijke Nederlandstalige artikelen
+            zien hoe mijn werk en mijn manier van denken veranderden.
           </p>
-          <h2>Meer dan een verzameling teksten</h2>
+          <h2>Waarom ik ze deel</h2>
           <p>
-            Deze website is tegelijk een technisch portfolio: een moderne
-            Next.js-applicatie met een afgeschermd CMS, server-side validatie,
-            veilige rich-textweergave en een MongoDB-datalaag die rekening houdt
-            met serverless uitvoering.
-          </p>
-          <h2>Volledig stageverslag</h2>
-          <p>
-            Het PDF-verslag wordt hier aangeboden zodra het echte document als{" "}
-            <code>public/internship-journal.pdf</code> is toegevoegd. Er wordt
-            geen placeholderdownload getoond.
+            Een stage bestaat uit meer dan het eindresultaat. De vragen,
+            afwegingen en kleine doorbraken onderweg verdienen ook een plek.
+            Daarom staan de verslagen hier als één doorlopend verhaal.
           </p>
           <div className="actions">
             <Link className="button primary" href="/blog">

@@ -6,7 +6,7 @@ Do not open a public issue for a suspected vulnerability. Contact the repository
 
 ## Supported version
 
-Only the current default branch is supported. This portfolio project has not received a third-party security audit or penetration test.
+Only the current default branch is supported. The application is deployed, but this portfolio project has not received a third-party security audit or penetration test.
 
 ## Operational expectations
 

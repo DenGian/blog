@@ -9,10 +9,13 @@ import { logOperationalError } from "@/lib/operational-log";
 export const dynamic = "force-dynamic";
 type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const post = await getPublishedPost((await params).slug).catch((error) => {
+  let post;
+  try {
+    post = await getPublishedPost((await params).slug);
+  } catch (error) {
     logOperationalError("article metadata retrieval", error);
-    return null;
-  });
+    throw error;
+  }
   if (!post) notFound();
   const path = `/blog/${post.slug}`;
   return {
@@ -35,10 +38,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 export default async function ArticlePage({ params }: Props) {
   const slug = (await params).slug;
-  const post = await getPublishedPost(slug).catch((error) => {
+  let post;
+  try {
+    post = await getPublishedPost(slug);
+  } catch (error) {
     logOperationalError("article retrieval", error);
-    return null;
-  });
+    throw error;
+  }
   if (!post) notFound();
   const adjacent = await getAdjacentPosts(post).catch((error) => {
     logOperationalError("adjacent article retrieval", error);

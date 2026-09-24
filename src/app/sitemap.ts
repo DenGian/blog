@@ -23,6 +23,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ];
   } catch (error) {
     logOperationalError("sitemap post retrieval", error);
-    return fixed;
+    throw error;
   }
 }

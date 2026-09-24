@@ -1,6 +1,6 @@
 # Deployment and migration runbook
 
-No external setup or deployment was performed as part of the local overhaul.
+The application is deployed at https://holoncom-blog.vercel.app/. Public article retrieval is currently failing; the original 15 posts are confirmed in `blog_portfolio.posts` via a read-only local export. Review Vercel runtime logs and environment scopes before changing data.
 
 ## 1. Rotate credentials
 
@@ -52,7 +52,7 @@ If an apply fails, stop writes, retain logs that contain no credentials, restore
 
 ## 7. Vercel checklist
 
-1. Import the repository without changing its name or settings automatically.
+1. Open the existing Vercel project for https://holoncom-blog.vercel.app/.
 2. Select Node.js 22 and the Next.js framework preset.
 3. Enable Vercel’s automatic system environment variables so `VERCEL_ENV`, `VERCEL_URL`, and `VERCEL_PROJECT_PRODUCTION_URL` are present at build and runtime.
 4. Set all required variables for Production; use isolated credentials for Preview. Never share the production database/user with Preview.
@@ -60,31 +60,35 @@ If an apply fails, stop writes, retain logs that contain no credentials, restore
 6. Keep server-only variables out of the `NEXT_PUBLIC_` namespace.
 7. Run `npm run check` locally and in CI before deployment.
 8. Deploy a preview, inspect response headers/CSP, and test without optional variables first.
-9. Add the custom domain, verify DNS and HTTPS, update `SITE_URL`, and redeploy.
+9. Verify the production domain and `SITE_URL`, then redeploy after changing variables.
 10. Do not enable production CMS login until durable rate limiting is verified.
 
 ### Exact Vercel environment-variable checklist
 
-| Variable                         | Environments           | Requirement                                                                 | Safe setup                                                                                                                                  |
-| -------------------------------- | ---------------------- | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
-| `MONGODB_URI`                    | Preview and Production | Required for database-backed routes                                         | Create separate least-privilege Atlas users/databases per environment; paste into Vercel as a sensitive server-only value.                  |
-| `MONGODB_DATABASE`               | Preview and Production | Required operationally (code default exists)                                | Use distinct non-production and production database names; enter the name only.                                                             |
-| `SITE_URL`                       | Production             | Recommended; optional when the production Vercel system URL is suitable     | Enter the verified canonical HTTPS origin, with no credentials, path, query, or fragment. Do not set it to a Preview URL.                   |
-| `ADMIN_PASSWORD_HASH`            | Preview and Production | Optional; required to enable CMS login                                      | Generate from a unique password with `npm run auth:hash`; store only the resulting bcrypt hash. Never restore `NEXT_PUBLIC_ADMIN_PASSWORD`. |
-| `SESSION_SECRET`                 | Preview and Production | Optional; required with `ADMIN_PASSWORD_HASH`                               | Generate at least 32 random bytes with a cryptographically secure password/secret generator; use a distinct value per environment.          |
-| `UPSTASH_REDIS_REST_URL`         | Preview and Production | Optional generally; required to enable CMS login on each Vercel environment | Create separate durable rate-limit stores where practical and copy the provider HTTPS REST endpoint as server-only.                         |
-| `UPSTASH_REDIS_REST_TOKEN`       | Preview and Production | Optional generally; required with the Upstash URL                           | Generate/use the matching restricted provider token and store it as sensitive server-only data.                                             |
-| `CLOUDINARY_CLOUD_NAME`          | Preview and Production | Optional; all three Cloudinary values are required together                 | Use a dedicated/restricted Cloudinary account or environment and enter its cloud name.                                                      |
-| `CLOUDINARY_API_KEY`             | Preview and Production | Optional; required with Cloudinary                                          | Create a dedicated restricted API credential and store the identifier server-side.                                                          |
-| `CLOUDINARY_API_SECRET`          | Preview and Production | Optional; required with Cloudinary                                          | Store the matching secret as sensitive server-only data; never prefix it `NEXT_PUBLIC_`.                                                    |
-| `NEXT_PUBLIC_GISCUS_REPO`        | Preview and Production | Optional; all four Giscus values are required together                      | Copy the public `owner/repository` identifier from Giscus setup.                                                                            |
-| `NEXT_PUBLIC_GISCUS_REPO_ID`     | Preview and Production | Optional; required with Giscus                                              | Copy the public repository ID produced by Giscus setup.                                                                                     |
-| `NEXT_PUBLIC_GISCUS_CATEGORY`    | Preview and Production | Optional; required with Giscus                                              | Enter the chosen public Discussions category name.                                                                                          |
-| `NEXT_PUBLIC_GISCUS_CATEGORY_ID` | Preview and Production | Optional; required with Giscus                                              | Copy the public category ID produced by Giscus setup.                                                                                       |
-| `NEXT_PUBLIC_GITHUB_URL`         | Preview and Production | Optional                                                                    | Enter the verified public HTTPS profile URL.                                                                                                |
-| `NEXT_PUBLIC_LINKEDIN_URL`       | Preview and Production | Optional                                                                    | Enter the verified public HTTPS profile URL.                                                                                                |
+| Variable                         | Environments           | Requirement                                                                 | Safe setup                                                                                                                                                              |
+| -------------------------------- | ---------------------- | --------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `MONGODB_URI`                    | Preview and Production | Required for database-backed routes                                         | Create separate least-privilege Atlas users/databases per environment; paste into Vercel as a sensitive server-only value.                                              |
+| `MONGODB_DATABASE`               | Preview and Production | Required operationally (code default exists)                                | Set `blog_portfolio` in Production; use a separate name for Preview.                                                                                                    |
+| `SITE_URL`                       | Production             | Required for this deployment                                                | Set `https://holoncom-blog.vercel.app`; do not set it to a Preview URL.                                                                                                 |
+| `ADMIN_PASSWORD_HASH`            | Preview and Production | Optional; required to enable CMS login                                      | Generate from a unique password with `npm run auth:hash`; store only the resulting bcrypt hash. Generate a fresh credential; the former public password is compromised. |
+| `SESSION_SECRET`                 | Preview and Production | Optional; required with `ADMIN_PASSWORD_HASH`                               | Generate at least 32 random bytes with a cryptographically secure password/secret generator; use a distinct value per environment.                                      |
+| `UPSTASH_REDIS_REST_URL`         | Preview and Production | Optional generally; required to enable CMS login on each Vercel environment | Create separate durable rate-limit stores where practical and copy the provider HTTPS REST endpoint as server-only.                                                     |
+| `UPSTASH_REDIS_REST_TOKEN`       | Preview and Production | Optional generally; required with the Upstash URL                           | Generate/use the matching restricted provider token and store it as sensitive server-only data.                                                                         |
+| `CLOUDINARY_CLOUD_NAME`          | Preview and Production | Optional; all three Cloudinary values are required together                 | Use a dedicated/restricted Cloudinary account or environment and enter its cloud name.                                                                                  |
+| `CLOUDINARY_API_KEY`             | Preview and Production | Optional; required with Cloudinary                                          | Create a dedicated restricted API credential and store the identifier server-side.                                                                                      |
+| `CLOUDINARY_API_SECRET`          | Preview and Production | Optional; required with Cloudinary                                          | Store the matching secret as sensitive server-only data; never prefix it `NEXT_PUBLIC_`.                                                                                |
+| `NEXT_PUBLIC_GISCUS_REPO`        | Preview and Production | Optional; all four Giscus values are required together                      | Copy the public `owner/repository` identifier from Giscus setup.                                                                                                        |
+| `NEXT_PUBLIC_GISCUS_REPO_ID`     | Preview and Production | Optional; required with Giscus                                              | Copy the public repository ID produced by Giscus setup.                                                                                                                 |
+| `NEXT_PUBLIC_GISCUS_CATEGORY`    | Preview and Production | Optional; required with Giscus                                              | Enter the chosen public Discussions category name.                                                                                                                      |
+| `NEXT_PUBLIC_GISCUS_CATEGORY_ID` | Preview and Production | Optional; required with Giscus                                              | Copy the public category ID produced by Giscus setup.                                                                                                                   |
+| `NEXT_PUBLIC_GITHUB_URL`         | Preview and Production | Optional                                                                    | Enter the verified public HTTPS profile URL.                                                                                                                            |
+| `NEXT_PUBLIC_LINKEDIN_URL`       | Preview and Production | Optional                                                                    | Enter the verified public HTTPS profile URL.                                                                                                                            |
 
-Do not manually create `VERCEL_ENV`, `VERCEL_URL`, or `VERCEL_PROJECT_PRODUCTION_URL`; enable automatic exposure of Vercel system variables. Remove legacy `NEXT_PUBLIC_SITE_URL` and `NEXT_PUBLIC_ADMIN_PASSWORD` from every environment. The latter exposed the old administrator password to browsers and must never be restored.
+Editing Vercel environment variables does not update an existing deployment; redeploy Production after corrections. For the current outage, inspect the Production deployment runtime log for a `MONGODB_URI` configuration failure or database connection failure. Confirm the variable is scoped to Production, `MONGODB_DATABASE` is `blog_portfolio`, and the Atlas application user can read `posts`. If connection fails, check Atlas network access and credential validity without logging the URI. Do not run an apply migration as a connectivity fix.
+
+Preview must use a separate database or a read-only production-data user. It must have no production CMS mutation access and must use a distinct `SESSION_SECRET`.
+
+Do not manually create `VERCEL_ENV`, `VERCEL_URL`, or `VERCEL_PROJECT_PRODUCTION_URL`; enable automatic exposure of Vercel system variables. Remove legacy `NEXT_PUBLIC_SITE_URL` from every environment. Remove and rotate the former public admin credential; its old value was exposed to browsers.
 
 ## 8. Verification status and commands
 

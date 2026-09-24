@@ -16,8 +16,16 @@ async function expectNotFound(page: Page, path: string) {
 }
 test("public navigation, search, tags, and 404", async ({ page }) => {
   await page.goto("/");
+  await expect(
+    page.getByRole("heading", { name: "Recente weken" }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Docker fundamentals" }),
+  ).toBeVisible();
   await page.getByRole("link", { name: "Lees het journaal" }).click();
-  await expect(page.getByRole("heading", { name: "Artikelen" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Het journaal" }),
+  ).toBeVisible();
   await page
     .getByLabel("Zoek in titels, samenvattingen en tags")
     .fill("Docker");
@@ -32,6 +40,17 @@ test("public navigation, search, tags, and 404", async ({ page }) => {
   await page.getByRole("link", { name: "Docker fundamentals" }).click();
   await expect(page).toHaveURL(/docker-fundamentals/);
   await expectNotFound(page, "/blog/unknown-article");
+});
+test("public layout fits mobile, tablet and desktop", async ({ page }) => {
+  for (const width of [390, 1024, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth > window.innerWidth,
+    );
+    expect(overflow).toBe(false);
+  }
 });
 test("protected route, invalid login, secure session, and logout", async ({
   page,

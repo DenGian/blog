@@ -22,6 +22,10 @@ export async function GET() {
     posts = await listAllPublishedPosts();
   } catch (error) {
     logOperationalError("feed post retrieval", error);
+    return new Response("Feed tijdelijk niet beschikbaar.", {
+      status: 503,
+      headers: { "Cache-Control": "no-store" },
+    });
   }
   const items = posts
     .map(

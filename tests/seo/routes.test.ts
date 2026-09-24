@@ -46,4 +46,15 @@ describe("sitemap and Atom completeness", () => {
     expect(body).toContain("Post &amp; 0");
     expect(body).toContain('rel="alternate" type="text/html"');
   });
+
+  it("includes every article in a fifteen-week publication set", async () => {
+    listAllPublishedPosts.mockResolvedValue(
+      Array.from({ length: 15 }, (_, index) => makePost(index)),
+    );
+    const { default: sitemap } = await import("@/app/sitemap");
+    const { GET } = await import("@/app/feed.xml/route");
+    expect(await sitemap()).toHaveLength(19);
+    const body = await (await GET()).text();
+    expect(body.match(/<entry>/g)).toHaveLength(15);
+  });
 });

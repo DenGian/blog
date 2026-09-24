@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { PostCard } from "@/components/posts/PostCard";
 import { listPublishedPosts } from "@/data/posts";
 import type { PostView } from "@/domain/posts/types";
@@ -6,45 +7,46 @@ import { logOperationalError } from "@/lib/operational-log";
 export const dynamic = "force-dynamic";
 export default async function HomePage() {
   let posts: PostView[] = [];
+  let unavailable = false;
   try {
-    posts = (await listPublishedPosts({ limit: 4 })).posts;
+    posts = (await listPublishedPosts({ limit: 3 })).posts;
   } catch (error) {
     logOperationalError("homepage post retrieval", error);
-    posts = [];
+    unavailable = true;
   }
   return (
     <>
-      <section className="hero">
-        <div className="shell hero-grid">
-          <div>
-            <p className="kicker">Werkplekleren · 15 weken · 2025</p>
-            <h1>Groeien door software te bouwen die ertoe doet.</h1>
+      <section className="hero shell">
+        <div className="hero-grid">
+          <div className="hero-intro">
+            <p className="kicker">Een stagejournaal van Ian Mondelaers</p>
+            <h1>Vijftien weken leren, bouwen en terugkijken.</h1>
             <p className="hero-copy">
-              Dit stagejournaal bundelt mijn technische keuzes, moeilijke bugs,
-              samenwerkingen en reflecties tijdens een software-engineeringstage
-              bij HolonCom.
+              Tijdens mijn software-engineeringstage bij HolonCom schreef ik
+              elke week op waar ik aan werkte, wat lastig was en wat ik leerde.
+              Hier staan die vijftien weken bij elkaar.
             </p>
             <div className="actions">
               <Link className="button primary" href="/blog">
                 Lees het journaal
               </Link>
-              <Link className="button secondary" href="/about">
-                Context en architectuur
+              <Link className="text-link" href="/about">
+                Meer over mijn stage →
               </Link>
             </div>
           </div>
-          <aside className="hero-panel" aria-label="Journaal in cijfers">
+          <aside className="hero-author">
+            <Image
+              src="/profile-image.jpg"
+              alt="Ian Mondelaers"
+              width={541}
+              height={1040}
+              sizes="(max-width: 760px) 92px, 148px"
+              priority
+            />
             <div>
-              <strong>15</strong>
-              <span>weekverslagen</span>
-            </div>
-            <div>
-              <strong>1</strong>
-              <span>volledige stageperiode</span>
-            </div>
-            <div>
-              <strong>NL</strong>
-              <span>authentieke reflecties</span>
+              <strong>Ian Mondelaers</strong>
+              <span>Software engineering · HolonCom</span>
             </div>
           </aside>
         </div>
@@ -52,8 +54,8 @@ export default async function HomePage() {
       <section className="section shell">
         <div className="section-heading">
           <div>
-            <p className="kicker">Recente hoofdstukken</p>
-            <h2>Van code naar professioneel inzicht</h2>
+            <p className="kicker">Uit het journaal</p>
+            <h2>Recente weken</h2>
           </div>
           <Link href="/blog">Alle artikelen →</Link>
         </div>
@@ -63,29 +65,20 @@ export default async function HomePage() {
               <PostCard key={post.id} post={post} featured={index === 0} />
             ))}
           </div>
-        ) : (
+        ) : unavailable ? (
           <div className="empty-state">
             <h2>De artikelen zijn tijdelijk niet beschikbaar.</h2>
             <p>
-              Probeer het later opnieuw. De publieke site blijft bruikbaar
-              zonder optionele integraties.
+              Het journaal kan momenteel niet worden geladen. Probeer het later
+              opnieuw.
             </p>
           </div>
+        ) : (
+          <div className="empty-state">
+            <h2>Er zijn nog geen artikelen gepubliceerd.</h2>
+            <p>Kom later terug voor de weekverslagen.</p>
+          </div>
         )}
-      </section>
-      <section className="statement">
-        <div className="shell narrow">
-          <p className="kicker">For international reviewers</p>
-          <h2>
-            A real internship record, presented as a production-minded
-            full-stack application.
-          </h2>
-          <p>
-            The Dutch articles remain unaltered. The surrounding platform
-            demonstrates secure content management, typed server boundaries,
-            accessible presentation and deployment-aware engineering.
-          </p>
-        </div>
       </section>
     </>
   );
