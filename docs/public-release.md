@@ -15,9 +15,9 @@ See [deployment-runbook.md](deployment-runbook.md) for the complete variable tab
 
 ## GitHub metadata after review
 
-- Description: `Production-ready Next.js internship journal with a secure CMS, MongoDB content, automated testing and documented migration tooling.`
+- Description: `A Dutch software engineering internship journal and Next.js CMS documenting 15 weeks at HolonCom.`
 - Homepage: `https://holoncom-blog.vercel.app/`
-- Topics: `nextjs`, `typescript`, `react`, `mongodb`, `cms`, `blog`, `portfolio`, `vercel`, `playwright`, `vitest`, `accessibility`, `software-engineering`.
+- Topics: `nextjs`, `typescript`, `react`, `mongodb`, `cms`, `blog`, `portfolio`, `vercel`, `playwright`, `vitest`, `accessibility`, `software-engineering`, `internship`, `dutch`.
 - Keep Issues enabled for focused bug reports. Keep Discussions disabled until there is an active moderation plan; Giscus needs a public repository and Discussions, and should be enabled only by a separate manual decision.
 - Protect `main` with pull requests and the Quality status check after public visibility. Do not allow force pushes or deletions.
 - Review the full history and any old deployment bundles before changing visibility. The previous browser-side admin password must be rotated. If a real credential is ever found in Git history, rotate it and plan history cleanup before publication.
