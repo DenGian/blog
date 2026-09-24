@@ -23,7 +23,7 @@ export default async function LoginPage() {
       <div className="admin-card">
         <p className="kicker">Beheer</p>
         <h1>Aanmelden</h1>
-        <p>Meld je aan om de artikelen te beheren.</p>
+        <p>Meld je aan om de blogposts te beheren.</p>
         {configurationError && (
           <p className="notice warning" role="alert">
             Aanmelden is niet beschikbaar. Controleer de beheerinstellingen.

@@ -22,13 +22,16 @@ export async function PUT(request: NextRequest, context: Context) {
     const post = await updatePost((await context.params).id, parsed.data);
     return post
       ? NextResponse.json(post)
-      : NextResponse.json({ error: "Artikel niet gevonden." }, { status: 404 });
+      : NextResponse.json(
+          { error: "Blogpost niet gevonden." },
+          { status: 404 },
+        );
   } catch (error) {
     if (isDuplicateKeyError(error))
       return NextResponse.json(
         {
           error:
-            "Deze slug is net door een ander artikel gebruikt. Kies een andere slug.",
+            "Deze slug is net door een andere blogpost gebruikt. Kies een andere slug.",
         },
         { status: 409 },
       );
@@ -41,7 +44,10 @@ export async function DELETE(request: NextRequest, context: Context) {
   try {
     return (await deletePost((await context.params).id))
       ? new NextResponse(null, { status: 204 })
-      : NextResponse.json({ error: "Artikel niet gevonden." }, { status: 404 });
+      : NextResponse.json(
+          { error: "Blogpost niet gevonden." },
+          { status: 404 },
+        );
   } catch {
     return NextResponse.json(
       { error: "Verwijderen is mislukt." },

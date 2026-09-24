@@ -1,6 +1,6 @@
 import Link from "next/link";
 const links = [
-  { href: "/blog", label: "Artikelen" },
+  { href: "/blog", label: "Blog" },
   { href: "/about", label: "Over de stage" },
   { href: "/contact", label: "Contact" },
 ];
@@ -11,12 +11,16 @@ export function Header() {
         Naar inhoud
       </a>
       <div className="shell nav">
-        <Link className="brand" href="/" aria-label="Stagejournaal home">
+        <Link
+          className="brand"
+          href="/"
+          aria-label="Blog van Ian Mondelaers: home"
+        >
           <span className="brand-mark" aria-hidden>
             IM
           </span>
           <span>
-            Stagejournaal<small>Software engineering</small>
+            Blog<small>Software engineering</small>
           </span>
         </Link>
         <nav aria-label="Hoofdnavigatie">

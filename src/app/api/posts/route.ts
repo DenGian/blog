@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           error:
-            "Deze slug is net door een ander artikel gebruikt. Kies een andere slug.",
+            "Deze slug is net door een andere blogpost gebruikt. Kies een andere slug.",
         },
         { status: 409 },
       );

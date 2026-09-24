@@ -22,10 +22,8 @@ test("public navigation, search, tags, and 404", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: "Docker fundamentals" }),
   ).toBeVisible();
-  await page.getByRole("link", { name: "Lees het journaal" }).click();
-  await expect(
-    page.getByRole("heading", { name: "Het journaal" }),
-  ).toBeVisible();
+  await page.getByRole("link", { name: "Lees de blog" }).click();
+  await expect(page.getByRole("heading", { name: "De blog" })).toBeVisible();
   await page
     .getByLabel("Zoek in titels, samenvattingen en tags")
     .fill("Docker");
@@ -152,14 +150,14 @@ test("draft lifecycle, protected preview, publish, edit, unpublish, and API reje
   const rejected = await request.post("/api/posts", { data: {} });
   expect(rejected.status()).toBe(401);
   await login(page);
-  await page.getByRole("link", { name: "Nieuw artikel" }).last().click();
+  await page.getByRole("link", { name: "Nieuwe blogpost" }).last().click();
   await page.getByLabel("Titel", { exact: true }).fill("E2E lifecycle article");
   await page
     .getByLabel("Samenvatting", { exact: true })
     .fill("An isolated deterministic article lifecycle fixture.");
   await page.getByLabel("Tags").fill("e2e, testing");
   await page
-    .getByRole("textbox", { name: "Artikelinhoud" })
+    .getByRole("textbox", { name: "Blogpostinhoud" })
     .fill("Initial safe browser content");
   await page.getByRole("button", { name: "Bewaar als concept" }).click();
   await expect(page.getByText("E2E lifecycle article")).toBeVisible();

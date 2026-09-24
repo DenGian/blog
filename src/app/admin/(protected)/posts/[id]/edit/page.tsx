@@ -17,11 +17,8 @@ export default async function EditPostPage({
       <div className="admin-heading">
         <div>
           <p className="kicker">CMS</p>
-          <h1>Artikel bewerken</h1>
-          <p>
-            Server-side validatie en sanitization worden bij elke opslag
-            toegepast.
-          </p>
+          <h1>Blogpost bewerken</h1>
+          <p>Bij het opslaan wordt de inhoud gecontroleerd en opgeschoond.</p>
         </div>
       </div>
       <PostForm post={post} mediaConfigured={isMediaConfigured()} />

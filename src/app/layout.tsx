@@ -4,17 +4,17 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: getSiteUrl(),
   title: {
-    default: "Software Engineering Stagejournaal",
-    template: "%s | Stagejournaal",
+    default: "Blog van Ian Mondelaers",
+    template: "%s | Blog van Ian Mondelaers",
   },
   description:
-    "Ian Mondelaers blikt terug op vijftien weken software engineering bij HolonCom in 2025.",
-  applicationName: "Stagejournaal",
+    "Ian Mondelaers schrijft over vijftien weken als software engineer bij HolonCom in 2025.",
+  applicationName: "Blog van Ian Mondelaers",
   icons: { icon: "/favicon.ico" },
   openGraph: {
     type: "website",
     locale: "nl_BE",
-    siteName: "Software Engineering Stagejournaal",
+    siteName: "Blog van Ian Mondelaers",
   },
   robots: { index: true, follow: true },
 };

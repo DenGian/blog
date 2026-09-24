@@ -34,7 +34,7 @@ export async function GET() {
     )
     .join("");
   const updated = posts[0]?.updatedAt ?? "1970-01-01T00:00:00.000Z";
-  const body = `<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><title>Software Engineering Stagejournaal</title><id>${xml(origin.toString())}</id><link href="${xml(new URL("/", origin).toString())}" rel="alternate" type="text/html"/><link href="${xml(new URL("/feed.xml", origin).toString())}" rel="self" type="application/atom+xml"/><updated>${xml(updated)}</updated>${items}</feed>`;
+  const body = `<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom"><title>Blog van Ian Mondelaers</title><id>${xml(origin.toString())}</id><link href="${xml(new URL("/", origin).toString())}" rel="alternate" type="text/html"/><link href="${xml(new URL("/feed.xml", origin).toString())}" rel="self" type="application/atom+xml"/><updated>${xml(updated)}</updated>${items}</feed>`;
   return new Response(body, {
     headers: {
       "Content-Type": "application/atom+xml; charset=utf-8",

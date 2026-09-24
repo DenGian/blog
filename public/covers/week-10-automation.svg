@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="t d">
   <title id="t">Week 10 — automatie</title><desc id="d">Abstracte technische illustratie voor week 10.</desc>
   <rect width="1200" height="630" fill="#17332b"/><path d="M0 500 1200 210v420H0z" fill="#21463a"/>
-  <text x="72" y="105" fill="#f2eee4" font-family="ui-monospace,monospace" font-size="28" letter-spacing="6">STAGEJOURNAAL</text>
+  <text x="72" y="105" fill="#f2eee4" font-family="ui-monospace,monospace" font-size="28" letter-spacing="6">BLOG</text>
   <text x="72" y="530" fill="#f2eee4" font-family="ui-sans-serif,sans-serif" font-size="54" font-weight="700">AUTOMATIE</text>
   <text x="1128" y="548" fill="#efb08d" font-family="ui-monospace,monospace" font-size="124" font-weight="700" text-anchor="end">10</text>
   <path d="M230 315a100 100 0 1 0 200 0 100 100 0 1 0-200 0M570 315h410" fill="none" stroke="#efb08d" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>

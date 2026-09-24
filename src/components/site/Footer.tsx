@@ -5,11 +5,11 @@ export function Footer() {
     <footer className="site-footer">
       <div className="shell footer-grid">
         <div className="footer-identity">
-          <strong>Stagejournaal van Ian Mondelaers</strong>
-          <p>Vijftien weken software engineering bij HolonCom in 2025.</p>
+          <strong>Blog van Ian Mondelaers</strong>
+          <p>Vijftien weken als software engineer bij HolonCom in 2025.</p>
         </div>
         <nav className="footer-links" aria-label="Footernavigatie">
-          <Link href="/blog">Artikelen</Link>
+          <Link href="/blog">Blog</Link>
           <Link href="/about">Over de stage</Link>
           <Link href="/contact">Contact</Link>
           <a

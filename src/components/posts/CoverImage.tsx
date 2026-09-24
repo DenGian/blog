@@ -18,7 +18,7 @@ export function CoverImage({
         role="img"
         aria-label={`Geen coverafbeelding voor ${alt}`}
       >
-        <span>Stagejournaal</span>
+        <span>Blog</span>
       </div>
     );
   return (

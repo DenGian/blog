@@ -6,10 +6,10 @@ export function NotFoundContent() {
       <p className="kicker">404</p>
       <h1>Deze pagina bestaat niet.</h1>
       <p>
-        De link kan verouderd zijn, of het artikel is nog niet gepubliceerd.
+        De link kan verouderd zijn, of de blogpost is nog niet gepubliceerd.
       </p>
       <Link className="button primary" href="/blog">
-        Naar de artikelen
+        Naar de blog
       </Link>
     </section>
   );

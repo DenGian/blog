@@ -12,11 +12,11 @@ export default async function ProtectedAdminLayout({
     <section className="admin-shell">
       <header className="admin-nav">
         <Link href="/admin">
-          <strong>Journaal CMS</strong>
+          <strong>Blogbeheer</strong>
         </Link>
         <nav>
           <Link href="/admin">Dashboard</Link>
-          <Link href="/admin/posts/new">Nieuw artikel</Link>
+          <Link href="/admin/posts/new">Nieuwe blogpost</Link>
           <LogoutButton />
         </nav>
       </header>
