@@ -45,10 +45,10 @@ describe("security configuration", () => {
     expect(
       getSiteUrl({
         VERCEL_ENV: "production",
-        SITE_URL: "https://journal.example",
+        SITE_URL: "https://holoncom-blog.vercel.app",
         VERCEL_PROJECT_PRODUCTION_URL: "fallback.vercel.app",
       }).toString(),
-    ).toBe("https://journal.example/");
+    ).toBe("https://holoncom-blog.vercel.app/");
   });
 
   it("falls back to Vercel's project production URL", () => {

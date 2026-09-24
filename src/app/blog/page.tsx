@@ -30,10 +30,12 @@ export default async function BlogPage({
     totalPages: 1,
   };
   let tags: string[] = [];
+  let unavailable = false;
   try {
     [result, tags] = await Promise.all([listPublishedPosts(query), getTags()]);
   } catch (error) {
     logOperationalError("blog index retrieval", error);
+    unavailable = true;
   }
   const hrefFor = (page: number) => {
     const params = new URLSearchParams();
@@ -45,9 +47,12 @@ export default async function BlogPage({
   return (
     <section className="section shell">
       <header className="page-header">
-        <p className="kicker">Het volledige journaal</p>
-        <h1>Artikelen</h1>
-        <p>Technische verdieping en eerlijke reflectie, week na week.</p>
+        <p className="kicker">Vijftien weken bij HolonCom</p>
+        <h1>Het journaal</h1>
+        <p>
+          Van de eerste week tot het afscheid: werk, vragen en inzichten in de
+          volgorde waarin ze ontstonden.
+        </p>
       </header>
       <form className="search" action="/blog" role="search">
         <label htmlFor="search">Zoek in titels, samenvattingen en tags</label>
@@ -103,12 +108,19 @@ export default async function BlogPage({
           </nav>
         </details>
       )}
-      {result.posts.length ? (
+      {unavailable ? (
+        <div className="empty-state" role="status">
+          <h2>Het journaal is tijdelijk niet beschikbaar.</h2>
+          <p>
+            De artikelen konden niet worden geladen. Probeer het later opnieuw.
+          </p>
+        </div>
+      ) : result.posts.length ? (
         <>
           <p className="result-count">
             {result.total} {result.total === 1 ? "artikel" : "artikelen"}
           </p>
-          <div className="post-grid">
+          <div className="post-list">
             {result.posts.map((post) => (
               <PostCard key={post.id} post={post} />
             ))}
@@ -131,8 +143,16 @@ export default async function BlogPage({
         </>
       ) : (
         <div className="empty-state">
-          <h2>Geen artikelen gevonden</h2>
-          <p>Pas je zoekterm of filter aan.</p>
+          <h2>
+            {query.search || query.tag
+              ? "Geen artikelen gevonden"
+              : "Er zijn nog geen artikelen gepubliceerd"}
+          </h2>
+          <p>
+            {query.search || query.tag
+              ? "Pas je zoekterm of filter aan."
+              : "Kom later terug voor de weekverslagen."}
+          </p>
           <Link className="button secondary" href="/blog">
             Wis filters
           </Link>

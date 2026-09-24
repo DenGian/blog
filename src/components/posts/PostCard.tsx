@@ -13,6 +13,9 @@ export function PostCard({
   post: PostView;
   featured?: boolean;
 }) {
+  const week = post.slug.startsWith("eerste-week-")
+    ? 1
+    : Number(/^week-(\d+)-/.exec(post.slug)?.[1]);
   return (
     <article className={`post-card${featured ? " featured" : ""}`}>
       <Link
@@ -24,6 +27,11 @@ export function PostCard({
         <CoverImage src={post.coverImage} alt={post.title} />
       </Link>
       <div className="card-body">
+        {Number.isInteger(week) && week > 0 && week <= 15 && (
+          <span className="week-marker">
+            Week {String(week).padStart(2, "0")}
+          </span>
+        )}
         <div className="eyebrow">
           <time dateTime={post.publishedAt ?? post.createdAt}>
             {dateFormatter.format(new Date(post.publishedAt ?? post.createdAt))}

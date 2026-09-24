@@ -41,8 +41,8 @@ export function LoginForm({ configured }: { configured: boolean }) {
       </div>
       {!configured && (
         <p className="notice warning" role="status">
-          Admin-login is lokaal nog niet geconfigureerd. Zie{" "}
-          <code>.env.example</code>.
+          Aanmelden is momenteel niet beschikbaar. Neem contact op met de
+          beheerder als je toegang nodig hebt.
         </p>
       )}
       {error && (

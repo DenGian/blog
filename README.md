@@ -1,8 +1,12 @@
 # Software Engineering Internship Journal
 
-A Dutch public internship journal and a protected single-admin CMS. Fifteen original weekly articles document Ian Mondelaers’ workplace learning at HolonCom; the application around them is a production-minded Next.js portfolio project.
+[![Quality](https://github.com/DenGian/blog/actions/workflows/ci.yml/badge.svg)](https://github.com/DenGian/blog/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) · [Live site](https://holoncom-blog.vercel.app/)
+
+A deployed Dutch internship journal and a protected single-admin CMS. Live at [holoncom-blog.vercel.app](https://holoncom-blog.vercel.app/). Fifteen original weekly articles document Ian Mondelaers’ workplace learning at HolonCom; the application around them is a production-minded Next.js portfolio project.
 
 The articles are intentionally kept in Dutch and are not rewritten by the platform.
+
+![Current journal homepage with original weekly article covers](docs/assets/homepage.png)
 
 ## What is implemented
 
@@ -60,8 +64,8 @@ npm run dev
 | Name                             | Scope  | Required       | Purpose                                              |
 | -------------------------------- | ------ | -------------- | ---------------------------------------------------- |
 | `MONGODB_URI`                    | server | yes            | Least-privilege MongoDB connection string            |
-| `MONGODB_DATABASE`               | server | recommended    | Database name; defaults to `blog_portfolio`          |
-| `SITE_URL`                       | server | production     | Preferred canonical HTTPS production origin          |
+| `MONGODB_DATABASE`               | server | production     | Database name; defaults to `blog_portfolio`          |
+| `SITE_URL`                       | server | production     | `https://holoncom-blog.vercel.app`                   |
 | `ADMIN_PASSWORD_HASH`            | server | for CMS        | bcrypt hash for the sole administrator               |
 | `SESSION_SECRET`                 | server | for CMS        | At least 32 random characters for session encryption |
 | `UPSTASH_REDIS_REST_URL`         | server | production CMS | Durable login throttling endpoint                    |
@@ -127,15 +131,16 @@ The complete internship PDF was not present during the overhaul. Add the real do
 
 ## Deployment
 
-The repository is prepared for Vercel but has not been deployed. Atlas network rules, a least-privilege application user, Upstash, Cloudinary, Giscus, production secrets, migration approval, and smoke tests all require manual setup. Follow the deployment runbook before making the repository public.
+The site is deployed on Vercel, but its public article queries currently fail while the 15 original posts remain readable from the local MongoDB configuration. Production Vercel and Atlas settings must be checked manually; see the [deployment runbook](docs/deployment-runbook.md) and [public-release checklist](docs/public-release.md). Do not run the migration to repair a missing or failing production connection.
 
 ## Limitations and next steps
 
 - Durable rate limiting, media uploads, and comments require external configuration.
 - The migration and index apply modes have not been run against the existing database.
-- Deployment and optional external integrations remain manual; code-level readiness is not live-production proof.
+- The live deployment currently lacks working article retrieval. Production configuration and runtime logs require owner verification before public release.
+- Optional Cloudinary uploads and Giscus comments are not confirmed configured; production admin login is currently unavailable.
 - No analytics or contact-data collection is included.
 
 ## License and portfolio context
 
-The application source code is available under the MIT License. Written internship articles, personal photographs, and other original personal media remain © Ian Mondelaers and are not licensed under MIT. See [`LICENSE.md`](LICENSE.md) for the exact boundary.
+The application source code is available under the MIT License. Written internship articles, personal photographs, and other original personal media remain © Ian Mondelaers and are not licensed under MIT. See [`LICENSE`](LICENSE) for the standard MIT code license and [`CONTENT_LICENSE.md`](CONTENT_LICENSE.md) for the content boundary.
