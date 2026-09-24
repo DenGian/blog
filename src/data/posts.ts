@@ -195,7 +195,7 @@ export async function createPost(input: PostInput): Promise<PostView> {
         : undefined,
     date: input.status === "published" ? now : undefined,
     readingTime: calculateReadingTime(input.content),
-    author: { name: "Ian Mondelaers", image: "/profile.png" },
+    author: { name: "Ian Mondelaers" },
     schemaVersion: 2,
   });
   return toView(post.toObject() as unknown as LeanPost);

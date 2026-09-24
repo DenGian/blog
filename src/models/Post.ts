@@ -17,7 +17,6 @@ const postSchema = new Schema(
     tags: [{ type: String, trim: true }],
     author: {
       name: { type: String, default: "Ian Mondelaers" },
-      image: { type: String, default: "/profile.png" },
     },
     readingTime: Number,
     status: { type: String, enum: ["draft", "published"] },
