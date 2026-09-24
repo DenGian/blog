@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { createSlug, slugWithSuffix } from "@/domain/posts/slug";
 import { calculateReadingTime } from "@/domain/posts/reading-time";
 import { escapeRegex, normalizeSearch } from "@/domain/posts/search";
-import { sanitizePostHtml } from "@/domain/posts/sanitize";
+import { hasVisiblePostText, sanitizePostHtml } from "@/domain/posts/sanitize";
 import { coverImageSchema, postInputSchema } from "@/domain/posts/schema";
 import { legacyCoverBySlug } from "@/domain/posts/legacy-covers";
 import { legacyCovers as migrationLegacyCovers } from "../../scripts/legacy-covers.mjs";
@@ -26,6 +26,15 @@ describe("post domain", () => {
     );
     expect(clean).toContain("Goed");
     expect(clean).not.toMatch(/script|onclick|javascript|iframe/i);
+  });
+  it("recognizes visible content without treating markup or spaces as text", () => {
+    expect(hasVisiblePostText("<p><strong>Tekst</strong></p>")).toBe(true);
+    expect(hasVisiblePostText("<p><br></p>")).toBe(false);
+    expect(hasVisiblePostText("<p>&nbsp;</p>")).toBe(false);
+    expect(hasVisiblePostText('<img alt="Tekst" src="/covers/week.svg">')).toBe(
+      false,
+    );
+    expect(hasVisiblePostText("<script>Tekst</script>")).toBe(false);
   });
   it("normalizes valid input and rejects mass assignment", () => {
     const valid = postInputSchema.parse({

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { createSlug } from "./slug";
-import { sanitizePostHtml } from "./sanitize";
+import { hasVisiblePostText, sanitizePostHtml } from "./sanitize";
 export const coverImageSchema = z
   .string()
   .trim()
@@ -31,10 +31,7 @@ export const postInputSchema = z
       .min(1)
       .max(250_000)
       .transform(sanitizePostHtml)
-      .refine(
-        (html) => html.replace(/<[^>]+>/g, "").trim().length > 0,
-        "Inhoud is verplicht.",
-      ),
+      .refine(hasVisiblePostText, "Inhoud is verplicht."),
     tags: z
       .array(tagSchema)
       .max(10)
