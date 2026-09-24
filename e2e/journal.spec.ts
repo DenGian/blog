@@ -4,7 +4,7 @@ const password =
 async function login(page: Page) {
   await page.goto("/admin/login");
   await page.getByLabel("Beheerderswachtwoord").fill(password);
-  await page.getByRole("button", { name: "Veilig aanmelden" }).click();
+  await page.getByRole("button", { name: "Aanmelden" }).click();
   await expect(page).toHaveURL(/\/admin$/);
 }
 async function expectNotFound(page: Page, path: string) {
@@ -40,9 +40,17 @@ test("public navigation, search, tags, and 404", async ({ page }) => {
   await page.getByRole("link", { name: "Docker fundamentals" }).click();
   await expect(page).toHaveURL(/docker-fundamentals/);
   await expectNotFound(page, "/blog/unknown-article");
+  await expect(page.locator(".site-header")).toHaveCount(1);
+  await expect(page.locator(".site-footer")).toHaveCount(1);
+  await page.goto("/admin/unknown-page");
+  await expect(page.locator(".site-header")).toHaveCount(0);
+  await expect(page.locator(".site-footer")).toHaveCount(0);
+  await expectNotFound(page, "/unknown-page");
+  await expect(page.locator(".site-header")).toHaveCount(1);
+  await expect(page.locator(".site-footer")).toHaveCount(1);
 });
 test("public layout fits mobile, tablet and desktop", async ({ page }) => {
-  for (const width of [390, 1024, 1440]) {
+  for (const width of [390, 768, 1024, 1440]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("/");
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
@@ -52,6 +60,62 @@ test("public layout fits mobile, tablet and desktop", async ({ page }) => {
     expect(overflow).toBe(false);
   }
 });
+
+test("journal pages keep their layout and links across screen sizes", async ({
+  page,
+}) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (error) => pageErrors.push(error.message));
+  for (const width of [390, 768, 1024, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const path of [
+      "/",
+      "/blog",
+      "/about",
+      "/contact",
+      "/blog/docker-fundamentals",
+      "/admin/login",
+    ]) {
+      await page.goto(path);
+      await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+      expect(
+        await page.evaluate(
+          () => document.documentElement.scrollWidth > window.innerWidth,
+        ),
+        `${path} overflows at ${width}px`,
+      ).toBe(false);
+    }
+  }
+  await page.goto("/contact");
+  for (const label of [/LinkedIn-profiel/, /GitHub-projecten/]) {
+    const link = page.locator("main").getByRole("link", { name: label });
+    await expect(link).toHaveAttribute("target", "_blank");
+    await expect(link).toHaveAttribute("rel", "noopener noreferrer");
+    await expect(link).toHaveAttribute("href", /^https:\/\//);
+  }
+  expect(pageErrors).toEqual([]);
+});
+test("removed personal photos are unavailable and unreferenced", async ({
+  page,
+  request,
+}) => {
+  for (const asset of ["/profile-image.jpg", "/profile.png"]) {
+    expect((await request.get(asset)).status()).toBe(404);
+  }
+  for (const path of [
+    "/",
+    "/blog",
+    "/about",
+    "/contact",
+    "/blog/docker-fundamentals",
+  ]) {
+    await page.goto(path);
+    const html = await page.locator("body").innerHTML();
+    expect(html).not.toMatch(/profile-image\.jpg|profile\.png/);
+  }
+  await page.goto("/about");
+  await expect(page.locator("main img")).toHaveCount(0);
+});
 test("protected route, invalid login, secure session, and logout", async ({
   page,
   context,
@@ -59,9 +123,13 @@ test("protected route, invalid login, secure session, and logout", async ({
   await page.goto("/admin");
   await expect(page).toHaveURL(/\/admin\/login/);
   await page.getByLabel("Beheerderswachtwoord").fill("wrong-password");
-  await page.getByRole("button", { name: "Veilig aanmelden" }).click();
+  await expect(page.locator(".site-header")).toHaveCount(0);
+  await expect(page.locator(".site-footer")).toHaveCount(0);
+  await page.getByRole("button", { name: "Aanmelden" }).click();
   await expect(page.getByText("Onjuiste aanmeldgegevens.")).toBeVisible();
   await login(page);
+  await expect(page.locator(".site-header")).toHaveCount(0);
+  await expect(page.locator(".site-footer")).toHaveCount(0);
   const cookie = (await context.cookies()).find(
     (item) => item.name === "journal_admin",
   );
