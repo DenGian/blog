@@ -37,7 +37,7 @@
     "iron-session": "9.0.1",
     "lowlight": "3.3.0",
     "mongodb": "7.6.0",
-    "mongoose": "9.10.1",
+    "mongoose": "9.10.3",
     "next": "16.3.5",
     "react": "19.3.0",
     "react-dom": "19.3.0",
