@@ -28,7 +28,7 @@
     "auth:hash": "node scripts/generate-password-hash.mjs"
   },
   "dependencies": {
-    "@tiptap/extension-code-block-lowlight": "3.31.3",
+    "@tiptap/extension-code-block-lowlight": "3.31.4",
     "@tiptap/extension-link": "3.31.3",
     "@tiptap/pm": "3.31.3",
     "@tiptap/react": "3.31.3",
